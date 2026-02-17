@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400&family=Space+Grotesk&display=swap" rel="stylesheet">
 <style>
 /* ================================================================
-   CSS VARIABLES
+   CSS VARIABLES - DARK MODE (DEFAULT)
    ================================================================ */
 :root {
   /* Colors */
@@ -22,11 +22,17 @@
   --text-primary: #f0ede6;
   --text-secondary: #c8c3b8;
   --text-muted: #666666;
+  --card-bg: rgba(13, 13, 13, 0.95);
+  --nav-bg: rgba(5, 5, 5, 0.85);
   --error: #ff3636;
   --success: #00e87b;
   --africa: #d4a438;
   --india: #3b8bff;
   --amazon: #00e87b;
+  --map-continent: #1a1a1a;
+  --map-stroke: #2a2a2a;
+  --hero-overlay-start: rgba(5, 5, 5, 0.6);
+  --hero-overlay-end: rgba(5, 5, 5, 0.8);
   
   /* Z-Index Stack */
   --z-grain: 10000;
@@ -35,6 +41,46 @@
   --z-nav: 9000;
   --z-form: 100;
   --z-map-cards: 50;
+}
+
+/* ================================================================
+   LIGHT MODE
+   ================================================================ */
+.light-mode {
+  --bg: #ffffff;
+  --surface-1: #f7f7f7;
+  --surface-2: #f0f0f0;
+  --surface-3: #e8e8e8;
+  --text-primary: #111111;
+  --text-secondary: #333333;
+  --text-muted: #888888;
+  --card-bg: rgba(255, 255, 255, 0.95);
+  --nav-bg: rgba(255, 255, 255, 0.9);
+  --accent: #e01060;
+  --accent-rgb: 224, 16, 96;
+  --map-continent: #e0e0e0;
+  --map-stroke: #cccccc;
+  --hero-overlay-start: rgba(255, 255, 255, 0.75);
+  --hero-overlay-end: rgba(255, 255, 255, 0.9);
+}
+
+.light-mode .nav {
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.light-mode .location-card,
+.light-mode .journey-mobile-card {
+  background: var(--card-bg);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.light-mode .hero-video-overlay {
+  background: linear-gradient(to bottom, var(--hero-overlay-start), var(--hero-overlay-end));
+}
+
+.light-mode .continents {
+  fill: var(--map-continent);
+  stroke: var(--map-stroke);
 }
 
 /* ================================================================
@@ -56,6 +102,7 @@ body {
   line-height: 1.7;
   background: var(--bg);
   color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 ::selection {
@@ -158,10 +205,10 @@ body::after {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(5, 5, 5, 0.8);
+  background: var(--nav-bg);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 .nav.hidden {
@@ -389,6 +436,7 @@ body::after {
 .stats {
   padding: 140px clamp(2rem, 8vw, 10rem);
   background: var(--bg);
+  transition: background-color 0.3s ease;
 }
 
 .stats-grid {
@@ -539,7 +587,7 @@ body::after {
   width: 100%;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .journey-header {
@@ -583,7 +631,7 @@ body::after {
   position: absolute;
   width: 300px;
   max-width: 90vw;
-  background: rgba(10, 10, 10, 0.95);
+  background: var(--card-bg);
   border: 1px solid var(--surface-3);
   border-radius: 8px;
   padding: 1.5rem;
@@ -593,6 +641,7 @@ body::after {
   pointer-events: none;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  transition: background-color 0.3s ease;
 }
 
 .location-card.africa { 
@@ -684,10 +733,11 @@ body::after {
 }
 
 .journey-mobile-card {
-  background: rgba(10, 10, 10, 0.95);
+  background: var(--card-bg);
   border: 1px solid var(--surface-3);
   border-radius: 8px;
   padding: 1.5rem;
+  transition: background-color 0.3s ease;
 }
 
 .journey-mobile-card.africa { border-top: 3px solid var(--africa); }
@@ -720,21 +770,10 @@ body::after {
   height: 500vh;
 }
 
-.gauntlet-sticky {
-  position: relative;
-  height: 100vh;
-  width: 100%;
-  perspective: 1200px;
-  perspective-origin: 50% 50%;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
+/* Header OUTSIDE pinned area - scrolls away naturally */
 .gauntlet-header {
   text-align: center;
-  padding: 2rem;
-  padding-top: 4rem;
+  padding: 100px 2rem 60px;
   position: relative;
   z-index: 10;
 }
@@ -762,67 +801,33 @@ body::after {
   margin: 0 auto;
 }
 
-.gauntlet-tunnel {
-  flex: 1;
+/* Spacer so header scrolls away before tunnel pins */
+.gauntlet-spacer {
+  height: 30vh;
+}
+
+.gauntlet-sticky {
   position: relative;
+  height: 100vh;
+  width: 100%;
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.gauntlet-tunnel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Tunnel Walls */
-.tunnel-wall {
-  position: absolute;
-  background: linear-gradient(to bottom, transparent, rgba(var(--accent-rgb), 0.1));
-  opacity: 0.1;
-}
-
-.tunnel-wall-top {
-  top: 0;
-  left: 10%;
-  right: 10%;
-  height: 30%;
-  border-bottom: 1px solid rgba(var(--accent-rgb), 0.2);
-}
-
-.tunnel-wall-bottom {
-  bottom: 0;
-  left: 10%;
-  right: 10%;
-  height: 30%;
-  border-top: 1px solid rgba(var(--accent-rgb), 0.2);
-}
-
-.tunnel-wall-left {
-  top: 10%;
-  bottom: 10%;
-  left: 0;
-  width: 20%;
-  border-right: 1px solid rgba(var(--accent-rgb), 0.2);
-}
-
-.tunnel-wall-right {
-  top: 10%;
-  bottom: 10%;
-  right: 0;
-  width: 20%;
-  border-left: 1px solid rgba(var(--accent-rgb), 0.2);
-}
-
-/* Light at the end */
-.tunnel-light {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,255,255,0.8), rgba(var(--accent-rgb),0.4), transparent);
-  filter: blur(20px);
-}
-
-/* Gates */
+/* Gates - NO BORDERS, just floating numbers */
 .tunnel-gate {
   position: absolute;
   top: 50%;
@@ -833,52 +838,33 @@ body::after {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 3px solid rgba(var(--accent-rgb), 0.4);
   background: transparent;
+  border: none;
   opacity: 0;
 }
 
-.tunnel-gate-1 {
-  width: 90vw;
-  height: 80vh;
-  border-color: rgba(var(--accent-rgb), 0.4);
-}
-
-.tunnel-gate-2 {
-  width: 60vw;
-  height: 55vh;
-  border-color: rgba(var(--accent-rgb), 0.55);
-}
-
-.tunnel-gate-3 {
-  width: 35vw;
-  height: 35vh;
-  border-color: rgba(var(--accent-rgb), 0.7);
-}
-
-.tunnel-gate-4 {
-  width: 20vw;
-  height: 20vh;
-  border-color: var(--accent);
-  box-shadow: 0 0 60px rgba(var(--accent-rgb), 0.5), inset 0 0 60px rgba(var(--accent-rgb), 0.2);
-}
-
+/* Gate numbers - HUGE and centered */
 .gate-number {
   font-family: 'Bebas Neue', cursive;
-  font-size: clamp(4rem, 15vw, 12rem);
+  font-size: clamp(8rem, 20vw, 16rem);
   letter-spacing: 0.03em;
   color: var(--accent);
-  text-shadow: 0 0 40px rgba(var(--accent-rgb), 0.5);
+  text-shadow: 0 0 60px rgba(var(--accent-rgb), 0.6);
   line-height: 1;
 }
 
 .gate-subtext {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+  font-size: clamp(0.8rem, 2vw, 1.2rem);
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--text-muted);
-  margin-top: 0.5rem;
+  margin-top: 1rem;
+}
+
+/* Final gate "40" gets extra glow */
+.tunnel-gate-4 .gate-number {
+  text-shadow: 0 0 80px rgba(var(--accent-rgb), 0.8), 0 0 120px rgba(var(--accent-rgb), 0.5);
 }
 
 /* Mystery Box */
@@ -891,11 +877,16 @@ body::after {
 .mystery-card {
   max-width: 500px;
   padding: 2.5rem;
-  background: var(--surface-1);
+  background: var(--card-bg);
   border-radius: 12px;
   text-align: center;
   position: relative;
   overflow: hidden;
+  transition: background-color 0.3s ease;
+}
+
+.light-mode .mystery-card {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .mystery-card::before {
@@ -1097,12 +1088,17 @@ body::after {
 }
 
 .form-card {
-  background: rgba(13, 13, 13, 0.95);
+  background: var(--card-bg);
   border-radius: 12px;
   padding: 2.5rem;
   position: relative;
   overflow: hidden;
   z-index: var(--z-form);
+  transition: background-color 0.3s ease;
+}
+
+.light-mode .form-card {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .form-card::before {
@@ -1290,6 +1286,59 @@ body::after {
   width: 80px;
   height: 80px;
   fill: var(--accent);
+}
+
+/* Scroll Progress Bar */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: var(--accent);
+  z-index: 9500;
+  transition: width 0.05s ease-out;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: var(--surface-2);
+  color: var(--text-primary);
+  cursor: pointer;
+  z-index: 9500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+}
+
+.theme-toggle svg {
+  width: 24px;
+  height: 24px;
+}
+
+.theme-toggle .icon-moon {
+  display: none;
+}
+
+.light-mode .theme-toggle .icon-sun {
+  display: none;
+}
+
+.light-mode .theme-toggle .icon-moon {
+  display: block;
 }
 
 /* ================================================================
@@ -1657,41 +1706,36 @@ body::after {
 
 <!-- Gauntlet Section (3D Tunnel) -->
 <section class="gauntlet" id="gauntlet">
+  <!-- Header OUTSIDE the pinned container - scrolls away naturally -->
+  <div class="gauntlet-header">
+    <p class="gauntlet-tag">Selection</p>
+    <h2 class="gauntlet-title">You do not get in by applying. You get in by surviving.</h2>
+    <p class="gauntlet-body">This is not a school application. This is a gauntlet. A series of challenges will determine who is serious, and who is just watching.</p>
+  </div>
+  
+  <!-- Spacer so header scrolls away before tunnel pins -->
+  <div class="gauntlet-spacer"></div>
+  
   <div class="gauntlet-container">
     <div class="gauntlet-sticky">
-      <div class="gauntlet-header">
-        <p class="gauntlet-tag">Selection</p>
-        <h2 class="gauntlet-title">You do not get in by applying. You get in by surviving.</h2>
-        <p class="gauntlet-body">This is not a school application. This is a gauntlet. A series of challenges will determine who is serious, and who is just watching.</p>
-      </div>
-      
       <div class="gauntlet-tunnel">
-        <!-- Tunnel Walls -->
-        <div class="tunnel-wall tunnel-wall-top"></div>
-        <div class="tunnel-wall tunnel-wall-bottom"></div>
-        <div class="tunnel-wall tunnel-wall-left"></div>
-        <div class="tunnel-wall tunnel-wall-right"></div>
-        
-        <!-- Light at the end -->
-        <div class="tunnel-light"></div>
-        
-        <!-- Gates -->
-        <div class="tunnel-gate tunnel-gate-1">
+        <!-- Gates - just floating numbers, no borders, no walls -->
+        <div class="tunnel-gate tunnel-gate-1" id="gate1">
           <span class="gate-number">100,000+</span>
           <span class="gate-subtext">enter their name</span>
         </div>
         
-        <div class="tunnel-gate tunnel-gate-2">
+        <div class="tunnel-gate tunnel-gate-2" id="gate2">
           <span class="gate-number">1,000</span>
           <span class="gate-subtext">survive the challenges</span>
         </div>
         
-        <div class="tunnel-gate tunnel-gate-3">
+        <div class="tunnel-gate tunnel-gate-3" id="gate3">
           <span class="gate-number">400</span>
           <span class="gate-subtext">compete in the Beast Tournament</span>
         </div>
         
-        <div class="tunnel-gate tunnel-gate-4">
+        <div class="tunnel-gate tunnel-gate-4" id="gate4">
           <span class="gate-number">40</span>
           <span class="gate-subtext">are chosen</span>
         </div>
@@ -1811,6 +1855,20 @@ body::after {
   </svg>
 </div>
 
+<!-- Scroll Progress Bar -->
+<div class="scroll-progress" id="scroll-progress"></div>
+
+<!-- Theme Toggle Button -->
+<button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode">
+  <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <circle cx="12" cy="12" r="5"/>
+    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+  </svg>
+  <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+  </svg>
+</button>
+
 <!-- GSAP Scripts -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -1822,6 +1880,33 @@ gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 // Mobile detection
 const isMobile = window.innerWidth <= 768;
+
+// ================================================================
+// THEME TOGGLE (Light/Dark Mode)
+// ================================================================
+const themeToggle = document.getElementById('theme-toggle');
+
+// Check saved preference on load
+if (localStorage.getItem('theme') === 'light') {
+  document.body.classList.add('light-mode');
+}
+
+themeToggle.addEventListener('click', () => {
+  document.body.classList.toggle('light-mode');
+  localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+});
+
+// ================================================================
+// SCROLL PROGRESS BAR
+// ================================================================
+const scrollProgress = document.getElementById('scroll-progress');
+
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.body.scrollHeight - window.innerHeight;
+  const progress = (scrollTop / docHeight) * 100;
+  scrollProgress.style.width = progress + '%';
+}, { passive: true });
 
 // ================================================================
 // NAVIGATION AUTO-HIDE
@@ -2057,12 +2142,12 @@ if (!isMobile) {
     }
   });
   
-  // Timeline segments (matching the brief's percentages)
+  // Timeline segments - SYNCED card timing with airplane arrival
   journeyTl
     // 0-5%: Map fades in, airplane appears at Home
     .to(airplane, { opacity: 1, duration: 0.05 }, 0)
     
-    // 5-25%: Fly from Home to Africa
+    // 5-20%: Fly from Home to Africa
     .to(airplane, {
       motionPath: {
         path: '#flightPath',
@@ -2072,21 +2157,21 @@ if (!isMobile) {
         start: 0,
         end: 0.33
       },
-      duration: 0.20
+      duration: 0.15
     }, 0.05)
     .to(flightPath, {
       strokeDashoffset: pathLength * 0.67,
-      duration: 0.20,
+      duration: 0.15,
       ease: 'none'
     }, 0.05)
     
-    // 25-30%: Africa card fades in (airplane pauses)
-    .to(cardAfrica, { opacity: 1, scale: 1, duration: 0.05 }, 0.25)
+    // 18-30%: Africa card fades in WHEN airplane arrives (synced)
+    .to(cardAfrica, { opacity: 1, scale: 1, duration: 0.04 }, 0.18)
     
     // 30-35%: Africa card fades out
     .to(cardAfrica, { opacity: 0, scale: 0.9, duration: 0.05 }, 0.30)
     
-    // 35-55%: Fly from Africa to India
+    // 35-50%: Fly from Africa to India
     .to(airplane, {
       motionPath: {
         path: '#flightPath',
@@ -2096,21 +2181,21 @@ if (!isMobile) {
         start: 0.33,
         end: 0.66
       },
-      duration: 0.20
+      duration: 0.15
     }, 0.35)
     .to(flightPath, {
       strokeDashoffset: pathLength * 0.34,
-      duration: 0.20,
+      duration: 0.15,
       ease: 'none'
     }, 0.35)
     
-    // 55-60%: India card fades in
-    .to(cardIndia, { opacity: 1, scale: 1, duration: 0.05 }, 0.55)
+    // 48-62%: India card fades in WHEN airplane arrives (synced)
+    .to(cardIndia, { opacity: 1, scale: 1, duration: 0.04 }, 0.48)
     
-    // 60-65%: India card fades out
-    .to(cardIndia, { opacity: 0, scale: 0.9, duration: 0.05 }, 0.60)
+    // 62-67%: India card fades out
+    .to(cardIndia, { opacity: 0, scale: 0.9, duration: 0.05 }, 0.62)
     
-    // 65-85%: Fly from India to Amazon
+    // 67-80%: Fly from India to Amazon
     .to(airplane, {
       motionPath: {
         path: '#flightPath',
@@ -2120,21 +2205,21 @@ if (!isMobile) {
         start: 0.66,
         end: 1
       },
-      duration: 0.20
-    }, 0.65)
+      duration: 0.13
+    }, 0.67)
     .to(flightPath, {
       strokeDashoffset: 0,
-      duration: 0.20,
+      duration: 0.13,
       ease: 'none'
-    }, 0.65)
+    }, 0.67)
     
-    // 85-90%: Amazon card fades in
-    .to(cardAmazon, { opacity: 1, scale: 1, duration: 0.05 }, 0.85)
+    // 78-92%: Amazon card fades in WHEN airplane arrives (synced)
+    .to(cardAmazon, { opacity: 1, scale: 1, duration: 0.04 }, 0.78)
     
-    // 90-95%: Amazon card fades out
-    .to(cardAmazon, { opacity: 0, scale: 0.9, duration: 0.05 }, 0.90)
+    // 92-95%: Amazon card fades out
+    .to(cardAmazon, { opacity: 0, scale: 0.9, duration: 0.03 }, 0.92)
     
-    // 95-100%: Map fades out
+    // 95-100%: Map fades out smoothly (not abruptly)
     .to('.journey-map-wrapper', { opacity: 0, duration: 0.05 }, 0.95);
 }
 
@@ -2144,18 +2229,12 @@ if (!isMobile) {
 if (!isMobile) {
   const gauntletContainer = document.querySelector('.gauntlet-container');
   const gauntletSticky = document.querySelector('.gauntlet-sticky');
-  const tunnelLight = document.querySelector('.tunnel-light');
-  const gate1 = document.querySelector('.tunnel-gate-1');
-  const gate2 = document.querySelector('.tunnel-gate-2');
-  const gate3 = document.querySelector('.tunnel-gate-3');
-  const gate4 = document.querySelector('.tunnel-gate-4');
-  const tunnelWalls = document.querySelectorAll('.tunnel-wall');
+  const gate1 = document.querySelector('#gate1');
+  const gate2 = document.querySelector('#gate2');
+  const gate3 = document.querySelector('#gate3');
+  const gate4 = document.querySelector('#gate4');
   
-  // Set initial states - all gates start far away and invisible
-  gsap.set(tunnelLight, { scale: 0.3, opacity: 0.2 });
-  gsap.set(tunnelWalls, { opacity: 0 });
-  
-  // Create the gauntlet timeline
+  // Create the gauntlet timeline - pure black bg, just floating numbers
   const gauntletTl = gsap.timeline({
     scrollTrigger: {
       trigger: gauntletContainer,
@@ -2166,58 +2245,46 @@ if (!isMobile) {
     }
   });
   
-  // Timeline segments - gates approach ONE AT A TIME with staggered starts
+  // Timeline segments - gates approach ONE AT A TIME through pure black
   gauntletTl
-    // 0-10%: Tunnel walls fade in, see the distant light
-    .to(tunnelWalls, { opacity: 0.15, duration: 0.10 }, 0)
-    .to(tunnelLight, { scale: 0.5, opacity: 0.4, duration: 0.10 }, 0)
-    
-    // 5-25%: Gate 1 (100,000+) approaches from far and passes through
+    // 0-25%: Gate 1 (100,000+) approaches from far and passes through
     .fromTo(gate1, 
-      { z: -3000, opacity: 0, scale: 0.3 },
-      { z: 800, opacity: 1, scale: 3, duration: 0.20, ease: 'power1.in' },
-      0.05
+      { z: -3000, opacity: 0, scale: 0.2 },
+      { z: 800, opacity: 1, scale: 2.5, duration: 0.22, ease: 'power1.in' },
+      0.03
     )
-    .to(gate1, { opacity: 0, duration: 0.05 }, 0.22) // fade out as it passes
-    .to(tunnelLight, { scale: 0.8, opacity: 0.5, duration: 0.20 }, 0.05)
+    .to(gate1, { opacity: 0, duration: 0.03 }, 0.22)
     
-    // 25-45%: Gate 2 (1,000) approaches and passes
+    // 25-50%: Gate 2 (1,000) approaches and passes
     .fromTo(gate2,
-      { z: -3000, opacity: 0, scale: 0.3 },
-      { z: 800, opacity: 1, scale: 2.5, duration: 0.20, ease: 'power1.in' },
+      { z: -3000, opacity: 0, scale: 0.2 },
+      { z: 800, opacity: 1, scale: 2.2, duration: 0.22, ease: 'power1.in' },
       0.25
     )
-    .to(gate2, { opacity: 0, duration: 0.05 }, 0.42)
-    .to(tunnelLight, { scale: 1.2, opacity: 0.6, duration: 0.20 }, 0.25)
+    .to(gate2, { opacity: 0, duration: 0.03 }, 0.44)
     
-    // 45-65%: Gate 3 (400) approaches and passes
+    // 50-70%: Gate 3 (400) approaches and passes
     .fromTo(gate3,
-      { z: -3000, opacity: 0, scale: 0.3 },
-      { z: 800, opacity: 1, scale: 2, duration: 0.20, ease: 'power1.in' },
-      0.45
+      { z: -3000, opacity: 0, scale: 0.2 },
+      { z: 800, opacity: 1, scale: 2, duration: 0.18, ease: 'power1.in' },
+      0.48
     )
-    .to(gate3, { opacity: 0, duration: 0.05 }, 0.62)
-    .to(tunnelLight, { scale: 2, opacity: 0.7, duration: 0.20 }, 0.45)
+    .to(gate3, { opacity: 0, duration: 0.03 }, 0.64)
     
-    // 65-90%: Gate 4 (40) approaches but STOPS at z=0, centers, and glows
+    // 68-95%: Gate 4 (40) approaches but STOPS at z=0, glows dramatically
     .fromTo(gate4,
-      { z: -3000, opacity: 0, scale: 0.5 },
-      { z: 0, opacity: 1, scale: 1, duration: 0.25, ease: 'power2.out' },
-      0.65
+      { z: -3000, opacity: 0, scale: 0.3 },
+      { z: 0, opacity: 1, scale: 1, duration: 0.27, ease: 'power2.out' },
+      0.68
     )
-    .to(tunnelLight, { 
-      scale: 6, 
-      opacity: 1, 
-      filter: 'blur(80px)',
-      duration: 0.25 
-    }, 0.65)
-    .to(gate4, {
-      boxShadow: '0 0 60px rgba(255, 31, 113, 0.8), 0 0 120px rgba(255, 31, 113, 0.5), inset 0 0 60px rgba(255, 31, 113, 0.3)',
-      duration: 0.10
-    }, 0.85)
+    // Add glow to the final "40"
+    .to('#gate4 .gate-number', {
+      textShadow: '0 0 80px rgba(255, 31, 113, 1), 0 0 150px rgba(255, 31, 113, 0.6), 0 0 200px rgba(255, 31, 113, 0.3)',
+      duration: 0.08
+    }, 0.90)
     
-    // 90-100%: Hold on "40" for dramatic effect
-    .to({}, { duration: 0.10 }, 0.90);
+    // 95-100%: Hold on "40" for dramatic effect
+    .to({}, { duration: 0.05 }, 0.95);
 }
 
 // ================================================================
