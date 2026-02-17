@@ -1,1758 +1,2326 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beast World School | Beast Philanthropy × Alpha School</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --accent: #ff2d7a;
-            --bg-dominant: #050505;
-            --bg-surface-1: #0d0d0d;
-            --bg-surface-2: #141414;
-            --bg-surface-3: #1c1c1c;
-            --text-primary: #f0ede6;
-            --text-secondary: #c8c3b8;
-            --text-muted: #666666;
-            --color-error: #ff3636;
-            --color-success: #00e87b;
-            --location-africa: #d4a853;
-            --location-india: #3b8bff;
-            --location-amazon: #00e87b;
-            --font-display: 'Bebas Neue', sans-serif;
-            --font-body: 'DM Sans', sans-serif;
-            --font-mono: 'Space Grotesk', sans-serif;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: var(--font-body);
-            font-weight: 300;
-            background: var(--bg-dominant);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* Global accent text glow */
-        .accent, .hero-headline .accent, .apply-punchline {
-            text-shadow: 0 0 30px rgba(255, 45, 122, 0.3);
-        }
-
-        /* Global smooth transitions */
-        a, button, input, select {
-            transition: all 0.3s ease;
-        }
-
-        /* Grain overlay */
-        body::after {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 9999;
-            opacity: 0.03;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-        }
-
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg-surface-1);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--bg-surface-3);
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--text-muted);
-        }
-
-        ::selection {
-            background: var(--accent);
-            color: black;
-        }
-
-        /* Navigation */
-        .nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 0.75rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(5, 5, 5, 0.85);
-            backdrop-filter: blur(20px);
-            transition: transform 0.3s ease;
-        }
-
-        .nav.hidden {
-            transform: translateY(-100%);
-        }
-
-        .nav-logo {
-            font-family: var(--font-display);
-            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
-            letter-spacing: 0.08em;
-            color: var(--text-primary);
-            text-decoration: none;
-        }
-
-        .nav-logo span {
-            color: var(--accent);
-            text-shadow: 0 0 20px rgba(255, 45, 122, 0.3);
-        }
-
-        .nav-apply {
-            font-family: var(--font-display);
-            font-size: 0.85rem;
-            letter-spacing: 0.1em;
-            padding: 0.5rem 1.25rem;
-            background: var(--accent);
-            color: #000;
-            border: none;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .nav-apply:hover {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 8px 30px rgba(255, 45, 122, 0.4);
-        }
-
-        /* Floating SVG decorations */
-        .floating-svg {
-            position: absolute;
-            pointer-events: none;
-            opacity: 0.06;
-            z-index: 1;
-        }
-
-        .float-1 {
-            animation: float1 8s ease-in-out infinite;
-        }
-
-        .float-2 {
-            animation: float2 10s ease-in-out infinite;
-        }
-
-        .float-3 {
-            animation: float3 12s ease-in-out infinite;
-        }
-
-        @keyframes float1 {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-30px) rotate(5deg); }
-        }
-
-        @keyframes float2 {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(-3deg); }
-        }
-
-        @keyframes float3 {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-25px) rotate(4deg); }
-        }
-
-        /* ========== SECTION 1: HERO ========== */
-        .hero {
-            min-height: 100vh;
-            padding: clamp(5rem, 8vh, 7rem) clamp(1.5rem, 5vw, 4rem) clamp(2rem, 4vh, 3rem);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            background: var(--bg-dominant);
-            background-image: 
-                radial-gradient(at 20% 30%, rgba(255, 45, 122, 0.08) 0%, transparent 50%),
-                radial-gradient(at 80% 70%, rgba(255, 45, 122, 0.04) 0%, transparent 50%);
-            overflow: hidden;
-        }
-
-        .hero-video-placeholder {
-            position: absolute;
-            top: 50%;
-            right: 5%;
-            transform: translateY(-50%);
-            width: clamp(300px, 40vw, 600px);
-            aspect-ratio: 16/9;
-            border-radius: 16px;
-            background: linear-gradient(110deg, var(--bg-surface-1) 0%, var(--bg-surface-2) 40%, var(--bg-surface-1) 60%, var(--bg-surface-2) 100%);
-            background-size: 300% 100%;
-            animation: shimmer 3s ease-in-out infinite;
-            opacity: 0.6;
-            z-index: 1;
-        }
-        /* REPLACE: hero-video */
-
-        @keyframes shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-
-        /* Particle field */
-        .particles {
-            position: absolute;
-            inset: 0;
-            overflow: hidden;
-            z-index: 0;
-        }
-
-        .particle {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: var(--accent);
-            border-radius: 50%;
-            opacity: 0.4;
-            animation: rise linear infinite;
-        }
-
-        @keyframes rise {
-            0% { transform: translateY(100vh) scale(0); opacity: 0; }
-            10% { opacity: 0.4; }
-            90% { opacity: 0.4; }
-            100% { transform: translateY(-100vh) scale(1); opacity: 0; }
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 10;
-            max-width: 900px;
-        }
-
-        .partnership-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            padding: 0.35rem 0.75rem;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 100px;
-            margin-bottom: 1.5rem;
-            font-family: var(--font-mono);
-            font-size: 0.55rem;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: var(--text-muted);
-        }
-
-        .partnership-badge::before {
-            content: '';
-            width: 5px;
-            height: 5px;
-            background: var(--accent);
-            border-radius: 50%;
-            opacity: 0.7;
-        }
-
-        .hero-headline {
-            font-family: var(--font-display);
-            font-size: clamp(2.5rem, 7vw, 6rem);
-            line-height: 0.95;
-            letter-spacing: 0.02em;
-            margin-bottom: 1.5rem;
-        }
-
-        .hero-headline .line {
-            display: block;
-            overflow: hidden;
-        }
-
-        .hero-headline .accent {
-            color: var(--accent);
-        }
-
-        .hero-subhead {
-            font-size: clamp(0.9rem, 1.5vw, 1.1rem);
-            color: var(--text-secondary);
-            max-width: 520px;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .hero-stats {
-            display: flex;
-            flex-wrap: wrap;
-            gap: clamp(1rem, 3vw, 2rem);
-            margin-bottom: 1.5rem;
-            align-items: flex-end;
-        }
-
-        .stat {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .stat-number {
-            font-family: var(--font-display);
-            font-size: clamp(2rem, 4vw, 3rem);
-            color: var(--accent);
-            line-height: 1;
-            letter-spacing: 0.02em;
-            text-shadow: 0 0 30px rgba(255, 45, 122, 0.3);
-        }
-
-        .stat-number.massive {
-            font-size: clamp(3.5rem, 8vw, 6rem);
-        }
-
-        .stat-label {
-            font-family: var(--font-mono);
-            font-size: 0.6rem;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            color: var(--text-muted);
-            margin-top: 0.5rem;
-        }
-
-        .hero-ctas {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .btn-primary {
-            font-family: var(--font-display);
-            font-size: 1.1rem;
-            letter-spacing: 0.1em;
-            padding: 1rem 2rem;
-            background: var(--accent);
-            color: #000;
-            border: none;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 8px 30px rgba(255, 45, 122, 0.4);
-        }
-
-        .btn-secondary {
-            font-family: var(--font-display);
-            font-size: 1.1rem;
-            letter-spacing: 0.1em;
-            padding: 1rem 2rem;
-            background: transparent;
-            color: var(--text-primary);
-            border: 1px solid var(--text-muted);
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-            transform: translateY(-2px) scale(1.02);
-            text-shadow: 0 0 20px rgba(255, 45, 122, 0.3);
-        }
-
-        /* Scroll indicator */
-        .scroll-indicator {
-            position: absolute;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            opacity: 0.6;
-            transition: opacity 0.5s ease;
-            z-index: 10;
-        }
-
-        .scroll-indicator.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .scroll-indicator-text {
-            font-family: var(--font-mono);
-            font-size: 0.55rem;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: var(--text-muted);
-        }
-
-        .scroll-indicator-arrow {
-            width: 20px;
-            height: 20px;
-            border-right: 1.5px solid var(--text-muted);
-            border-bottom: 1.5px solid var(--text-muted);
-            transform: rotate(45deg);
-            animation: bounce 2s ease-in-out infinite;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: rotate(45deg) translateY(0); }
-            40% { transform: rotate(45deg) translateY(6px); }
-            60% { transform: rotate(45deg) translateY(3px); }
-        }
-
-        /* Floating topographic SVG in hero */
-        .hero .floating-svg {
-            right: 10%;
-            top: 20%;
-            width: 400px;
-            height: 400px;
-        }
-
-        /* Section transition gradient */
-        .section-fade-top::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 150px;
-            background: linear-gradient(to bottom, var(--bg-dominant), transparent);
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .section-fade-bottom::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 150px;
-            background: linear-gradient(to top, var(--bg-surface-1), transparent);
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        /* ========== SECTION 2: MANIFESTO ========== */
-        .manifesto {
-            min-height: 100vh;
-            padding: clamp(10rem, 18vh, 14rem) clamp(1.5rem, 5vw, 4rem) clamp(8rem, 14vh, 12rem);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            position: relative;
-            background: var(--bg-surface-1);
-            background-image: 
-                radial-gradient(at 30% 20%, rgba(255, 45, 122, 0.06) 0%, transparent 50%),
-                radial-gradient(at 70% 80%, rgba(212, 168, 83, 0.04) 0%, transparent 50%);
-            overflow: hidden;
-        }
-
-        .manifesto-quote {
-            font-family: var(--font-display);
-            font-size: clamp(2rem, 5vw, 4rem);
-            line-height: 1.15;
-            letter-spacing: 0.02em;
-            max-width: 1100px;
-            margin-bottom: 5rem;
-            position: relative;
-            padding-left: 2rem;
-            border-left: 4px solid var(--accent);
-        }
-
-        .manifesto-quote .accent {
-            color: var(--accent);
-        }
-
-        .manifesto-body {
-            max-width: 580px;
-            margin-left: 0;
-        }
-
-        .manifesto-body p {
-            font-size: clamp(1rem, 1.5vw, 1.125rem);
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            line-height: 1.8;
-        }
-
-        .manifesto-footer {
-            margin-top: 4rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--bg-surface-3);
-        }
-
-        .manifesto-footer-text {
-            font-family: var(--font-display);
-            font-size: 0.85rem;
-            letter-spacing: 0.2em;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
-
-        /* Large faint SVG behind quote */
-        .manifesto .floating-svg.large {
-            position: absolute;
-            right: -10%;
-            top: 10%;
-            width: 600px;
-            height: 600px;
-            opacity: 0.03;
-        }
-
-        /* ========== SECTION 3: LOCATIONS (Horizontal Scroll) ========== */
-        .locations {
-            background: var(--bg-dominant);
-            padding-top: clamp(8rem, 12vh, 10rem);
-            position: relative;
-        }
-
-        .locations-header {
-            padding: 0 clamp(1.5rem, 5vw, 4rem);
-            margin-bottom: 4rem;
-        }
-
-        .locations-tag {
-            font-family: var(--font-mono);
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: var(--accent);
-            margin-bottom: 1rem;
-        }
-
-        .locations-title {
-            font-family: var(--font-display);
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            letter-spacing: 0.02em;
-            margin-bottom: 1.5rem;
-        }
-
-        .locations-intro {
-            font-size: clamp(1rem, 1.5vw, 1.125rem);
-            color: var(--text-secondary);
-            max-width: 600px;
-            line-height: 1.7;
-        }
-
-        .horizontal-wrapper {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .horizontal-track {
-            display: flex;
-            width: 300vw;
-        }
-
-        .location-panel {
-            width: 100vw;
-            min-height: 100vh;
-            padding: clamp(6rem, 10vh, 8rem) clamp(2.5rem, 6vw, 5rem) clamp(5rem, 8vh, 6rem);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            position: relative;
-            transition: background 0.5s ease;
-        }
-
-        .location-panel.africa {
-            background: var(--bg-dominant);
-            background-image: 
-                radial-gradient(at 20% 30%, rgba(212, 168, 83, 0.15) 0%, transparent 50%),
-                radial-gradient(at 80% 70%, rgba(212, 168, 83, 0.08) 0%, transparent 50%);
-        }
-
-        .location-panel.india {
-            background: var(--bg-dominant);
-            background-image: 
-                radial-gradient(at 20% 30%, rgba(59, 139, 255, 0.15) 0%, transparent 50%),
-                radial-gradient(at 80% 70%, rgba(59, 139, 255, 0.08) 0%, transparent 50%);
-        }
-
-        .location-panel.amazon {
-            background: var(--bg-dominant);
-            background-image: 
-                radial-gradient(at 20% 30%, rgba(0, 232, 123, 0.15) 0%, transparent 50%),
-                radial-gradient(at 80% 70%, rgba(0, 232, 123, 0.08) 0%, transparent 50%);
-        }
-
-        .location-name {
-            font-family: var(--font-display);
-            font-size: clamp(5rem, 15vw, 12rem);
-            line-height: 0.9;
-            letter-spacing: 0.02em;
-            margin-bottom: 1rem;
-        }
-
-        .location-subtitle {
-            font-family: var(--font-mono);
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-        }
-
-        .location-description {
-            font-size: clamp(1rem, 1.5vw, 1.125rem);
-            color: var(--text-secondary);
-            max-width: 500px;
-            line-height: 1.7;
-            margin-bottom: 2rem;
-        }
-
-        .location-quote {
-            font-family: var(--font-body);
-            font-size: clamp(1.25rem, 2vw, 1.5rem);
-            font-style: italic;
-            font-weight: 300;
-            color: var(--text-primary);
-            max-width: 450px;
-            margin-top: 2rem;
-            margin-bottom: 2.5rem;
-            position: relative;
-            padding-left: 1.5rem;
-            padding-top: 0.5rem;
-            padding-bottom: 0.5rem;
-        }
-
-        .africa .location-quote {
-            border-left: 3px solid var(--location-africa);
-        }
-
-        .india .location-quote {
-            border-left: 3px solid var(--location-india);
-        }
-
-        .amazon .location-quote {
-            border-left: 3px solid var(--location-amazon);
-        }
-
-        .location-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-        }
-
-        .location-tag {
-            font-family: var(--font-mono);
-            font-size: 0.6rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            padding: 0.4rem 0.75rem;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 4px;
-            color: var(--text-secondary);
-        }
-
-        .africa .location-tag {
-            border-left: 2px solid var(--location-africa);
-        }
-
-        .india .location-tag {
-            border-left: 2px solid var(--location-india);
-        }
-
-        .amazon .location-tag {
-            border-left: 2px solid var(--location-amazon);
-        }
-
-        /* Progress indicator */
-        .location-progress {
-            position: absolute;
-            bottom: 4rem;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 0.5rem;
-            z-index: 100;
-        }
-
-        .progress-segment {
-            width: 60px;
-            height: 3px;
-            background: var(--bg-surface-3);
-            border-radius: 2px;
-            transition: background 0.3s ease;
-        }
-
-        .progress-segment.active {
-            background: var(--accent);
-        }
-
-        /* Mobile fallback for locations */
-        @media (max-width: 768px) {
-            .horizontal-wrapper {
-                overflow: visible;
-            }
-
-            .horizontal-track {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .location-panel {
-                width: 100%;
-                min-height: auto;
-                padding: 4rem 1.5rem;
-            }
-
-            .location-progress {
-                display: none;
-            }
-
-            .location-name {
-                font-size: clamp(3rem, 12vw, 5rem);
-            }
-        }
-
-        /* ========== SECTION 4: HOW YOU GET IN ========== */
-        .selection {
-            padding: clamp(8rem, 15vh, 12rem) clamp(1.5rem, 5vw, 4rem);
-            background: var(--bg-surface-1);
-            background-image: 
-                radial-gradient(at 50% 0%, rgba(255, 45, 122, 0.06) 0%, transparent 50%);
-            position: relative;
-        }
-
-        .selection-tag {
-            font-family: var(--font-mono);
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: var(--accent);
-            margin-bottom: 1rem;
-        }
-
-        .selection-title {
-            font-family: var(--font-display);
-            font-size: clamp(2rem, 5vw, 4rem);
-            letter-spacing: 0.02em;
-            margin-bottom: 1.5rem;
-            max-width: 800px;
-        }
-
-        .selection-intro {
-            font-size: clamp(1rem, 1.5vw, 1.125rem);
-            color: var(--text-secondary);
-            max-width: 600px;
-            line-height: 1.7;
-            margin-bottom: 4rem;
-        }
-
-        .selection-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: start;
-        }
-
-        @media (max-width: 900px) {
-            .selection-content {
-                grid-template-columns: 1fr;
-                gap: 3rem;
-            }
-        }
-
-        /* Funnel visualization */
-        .funnel {
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
-        }
-
-        .funnel-bar {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        .funnel-fill {
-            height: 48px;
-            background: linear-gradient(90deg, var(--accent), rgba(255, 45, 122, 0.6));
-            border-radius: 4px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            padding-left: 1rem;
-        }
-
-        .funnel-bar:nth-child(1) .funnel-fill { width: 100%; }
-        .funnel-bar:nth-child(2) .funnel-fill { width: 10%; min-width: 80px; }
-        .funnel-bar:nth-child(3) .funnel-fill { width: 4%; min-width: 50px; }
-        .funnel-bar:nth-child(4) .funnel-fill { 
-            width: 2%; 
-            min-width: 30px;
-            box-shadow: 0 0 30px rgba(255, 45, 122, 0.6), 0 0 60px rgba(255, 45, 122, 0.3);
-        }
-
-        .funnel-number {
-            font-family: var(--font-display);
-            font-size: clamp(1rem, 2vw, 1.25rem);
-            color: #000;
-            white-space: nowrap;
-        }
-
-        .funnel-label {
-            font-size: clamp(0.875rem, 1.2vw, 1rem);
-            color: var(--text-secondary);
-            white-space: nowrap;
-        }
-
-        /* Mystery box */
-        .mystery-box {
-            background: var(--bg-surface-2);
-            border-radius: 16px;
-            padding: 2.5rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .mystery-box::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 16px;
-            padding: 2px;
-            background: linear-gradient(135deg, var(--accent), transparent, var(--accent));
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0.5;
-        }
-
-        .mystery-icon {
-            font-family: var(--font-display);
-            font-size: 4rem;
-            color: var(--accent);
-            margin-bottom: 1.5rem;
-            animation: pulse-glow 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse-glow {
-            0%, 100% { 
-                text-shadow: 0 0 20px rgba(255, 45, 122, 0.5);
-                opacity: 1;
-            }
-            50% { 
-                text-shadow: 0 0 40px rgba(255, 45, 122, 0.8), 0 0 60px rgba(255, 45, 122, 0.4);
-                opacity: 0.8;
-            }
-        }
-
-        .mystery-title {
-            font-family: var(--font-display);
-            font-size: clamp(1.5rem, 3vw, 2rem);
-            letter-spacing: 0.02em;
-            margin-bottom: 1rem;
-        }
-
-        .mystery-text {
-            font-size: clamp(0.95rem, 1.3vw, 1.05rem);
-            color: var(--text-secondary);
-            line-height: 1.7;
-        }
-
-        /* ========== SECTION 5: APPLY ========== */
-        .apply {
-            padding: clamp(10rem, 18vh, 14rem) clamp(1.5rem, 5vw, 4rem) clamp(6rem, 10vh, 8rem);
-            background: var(--bg-dominant);
-            background-image: 
-                radial-gradient(at 50% 30%, rgba(255, 45, 122, 0.08) 0%, transparent 40%);
-            text-align: center;
-            position: relative;
-        }
-
-        .apply-label {
-            font-family: var(--font-mono);
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 0.25em;
-            color: var(--accent);
-            margin-bottom: 2rem;
-        }
-
-        .apply-body {
-            font-size: clamp(1.1rem, 1.8vw, 1.35rem);
-            color: var(--text-secondary);
-            max-width: 700px;
-            margin: 0 auto 3rem;
-            line-height: 1.8;
-        }
-
-        .apply-punchline {
-            font-family: var(--font-display);
-            font-size: clamp(2.5rem, 6vw, 5rem);
-            letter-spacing: 0.02em;
-            color: var(--accent);
-            font-style: italic;
-            margin-bottom: 5rem;
-            position: relative;
-        }
-
-        .apply-punchline::before {
-            content: '';
-            position: absolute;
-            inset: -30%;
-            background: radial-gradient(circle, rgba(255, 45, 122, 0.15) 0%, transparent 70%);
-            filter: blur(60px);
-            z-index: -1;
-        }
-
-        /* Form card */
-        .form-card {
-            max-width: 700px;
-            margin: 0 auto;
-            background: var(--bg-surface-2);
-            border-radius: 20px;
-            padding: 3rem;
-            position: relative;
-            overflow: visible;
-            z-index: 1;
-        }
-
-        .form-card > * {
-            position: relative;
-            z-index: 2;
-        }
-
-        .form-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 20px;
-            padding: 2px;
-            background: linear-gradient(90deg, var(--accent), var(--color-success), var(--location-india), var(--accent));
-            background-size: 300% 100%;
-            animation: gradient-border 4s linear infinite;
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-        }
-
-        @keyframes gradient-border {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 300% 50%; }
-        }
-
-        .form-header {
-            font-family: var(--font-display);
-            font-size: clamp(1.75rem, 4vw, 2.5rem);
-            letter-spacing: 0.02em;
-            margin-bottom: 2rem;
-        }
-
-        .form-fields {
-            display: grid;
-            grid-template-columns: 1fr 1fr 100px;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        @media (max-width: 600px) {
-            .form-fields {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .form-input, .form-select {
-            font-family: var(--font-body);
-            font-size: 1rem;
-            padding: 1rem 1.25rem;
-            background: var(--bg-surface-1);
-            border: 2px solid var(--bg-surface-3);
-            border-radius: 8px;
-            color: var(--text-primary);
-            transition: border-color 0.3s ease;
-            outline: none;
-        }
-
-        .form-input:focus, .form-select:focus {
-            border-color: var(--accent);
-        }
-
-        .form-input.error, .form-select.error {
-            border-color: var(--color-error);
-            animation: shake 0.5s ease;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-5px); }
-            40%, 80% { transform: translateX(5px); }
-        }
-
-        .form-select {
-            cursor: pointer;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-        }
-
-        .form-submit {
-            font-family: var(--font-display);
-            font-size: 1.25rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            width: 100%;
-            padding: 1.25rem;
-            background: var(--accent);
-            color: #000;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .form-submit::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                to right,
-                transparent 0%,
-                rgba(255, 255, 255, 0.3) 50%,
-                transparent 100%
-            );
-            transform: rotate(45deg) translateX(-100%);
-            transition: transform 0.6s ease;
-        }
-
-        .form-submit:hover::after {
-            transform: rotate(45deg) translateX(100%);
-        }
-
-        .form-submit:hover {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 8px 30px rgba(255, 45, 122, 0.4);
-        }
-
-        .form-submit.success {
-            background: var(--color-success);
-            cursor: default;
-        }
-
-        .form-submit.success:hover {
-            transform: none;
-            box-shadow: none;
-        }
-
-        .form-submit:disabled {
-            cursor: default;
-        }
-
-        /* Live counter */
-        .live-counter {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-            margin-top: 1.5rem;
-        }
-
-        .counter-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--color-success);
-            border-radius: 50%;
-            animation: pulse-dot 1.5s ease-in-out infinite;
-        }
-
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.2); }
-        }
-
-        .counter-text {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-        }
-
-        .counter-number {
-            font-family: var(--font-display);
-            font-size: 1.25rem;
-            color: var(--accent);
-        }
-
-        .form-micro {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: 1rem;
-        }
-
-        .apply-dare {
-            font-style: italic;
-            color: var(--text-muted);
-            margin-top: 4rem;
-            font-size: clamp(1rem, 1.5vw, 1.125rem);
-        }
-
-        /* ========== FOOTER ========== */
-        .footer {
-            padding: 2rem clamp(1.5rem, 5vw, 4rem);
-            background: var(--bg-surface-1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-            border-top: 1px solid var(--bg-surface-3);
-        }
-
-        .footer-left {
-            font-family: var(--font-mono);
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--text-muted);
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .footer-link {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-
-        .footer-link:hover {
-            color: var(--accent);
-        }
-
-        @media (max-width: 600px) {
-            .footer {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .footer-links {
-                justify-content: center;
-            }
-        }
-
-        /* Utility classes */
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beast World School</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400&family=Space+Grotesk&display=swap" rel="stylesheet">
+<style>
+/* ================================================================
+   CSS VARIABLES
+   ================================================================ */
+:root {
+  /* Colors */
+  --accent: #ff1f71;
+  --accent-rgb: 255, 31, 113;
+  --bg: #050505;
+  --surface-1: #0d0d0d;
+  --surface-2: #111111;
+  --surface-3: #1a1a1a;
+  --text-primary: #f0ede6;
+  --text-secondary: #c8c3b8;
+  --text-muted: #666666;
+  --error: #ff3636;
+  --success: #00e87b;
+  --africa: #d4a438;
+  --india: #3b8bff;
+  --amazon: #00e87b;
+  
+  /* Z-Index Stack */
+  --z-grain: 10000;
+  --z-submit-plane: 9999;
+  --z-submit-wipe: 9998;
+  --z-nav: 9000;
+  --z-form: 100;
+  --z-map-cards: 50;
+}
+
+/* ================================================================
+   RESET & GLOBAL STYLES
+   ================================================================ */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.7;
+  background: var(--bg);
+  color: var(--text-primary);
+}
+
+::selection {
+  background: var(--accent);
+  color: black;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 3px;
+}
+
+/* Grain Texture Overlay */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: var(--z-grain);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.04;
+}
+
+/* ================================================================
+   TYPOGRAPHY
+   ================================================================ */
+.font-display {
+  font-family: 'Bebas Neue', cursive;
+  letter-spacing: 0.03em;
+}
+
+.font-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.text-accent {
+  color: var(--accent);
+  text-shadow: 0 0 30px rgba(var(--accent-rgb), 0.3);
+}
+
+/* ================================================================
+   BUTTONS
+   ================================================================ */
+.btn {
+  font-family: 'Bebas Neue', cursive;
+  letter-spacing: 0.03em;
+  padding: 1rem 2.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn:hover {
+  transform: scale(1.02);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: black;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--text-muted);
+  color: var(--text-primary);
+}
+
+.btn-ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ================================================================
+   NAVIGATION
+   ================================================================ */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-nav);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(5, 5, 5, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform 0.3s ease;
+}
+
+.nav.hidden {
+  transform: translateY(-100%);
+}
+
+.nav-logo {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  letter-spacing: 0.03em;
+}
+
+.nav-logo span:first-child {
+  color: var(--text-primary);
+}
+
+.nav-logo span:last-child {
+  color: var(--accent);
+}
+
+.nav-apply {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 0.9rem;
+  letter-spacing: 0.03em;
+  padding: 0.6rem 1.5rem;
+  background: var(--accent);
+  color: black;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.nav-apply:hover {
+  transform: scale(1.02);
+}
+
+/* ================================================================
+   HERO SECTION
+   ================================================================ */
+.hero {
+  position: relative;
+  height: 100vh;
+  min-height: 600px;
+  overflow: hidden;
+}
+
+/* Layer 0: Background Video */
+.hero-layer-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.hero-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.15;
+}
+
+.hero-video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(5,5,5,0.6), rgba(5,5,5,0.8));
+}
+
+/* Layer 1: Decorative BWS Text */
+.hero-layer-bws {
+  position: absolute;
+  top: 50%;
+  right: -5%;
+  transform: translateY(-50%);
+  z-index: 2;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 40vw;
+  color: var(--text-primary);
+  opacity: 0.05;
+  line-height: 0.8;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Layer 2: Hero Content */
+.hero-layer-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 clamp(2rem, 8vw, 10rem);
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  margin-bottom: 1.5rem;
+  width: fit-content;
+}
+
+.hero-badge-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+.hero-badge-text {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.hero-headline {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(3rem, 10vw, 7rem);
+  letter-spacing: 0.03em;
+  line-height: 1;
+  margin-bottom: 1.5rem;
+}
+
+.hero-headline-line {
+  display: block;
+}
+
+.hero-subhead {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: var(--text-secondary);
+  max-width: 560px;
+  margin-bottom: 2rem;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Layer 3: Particles */
+.hero-layer-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--accent);
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: float-up 8s infinite ease-in-out;
+}
+
+@keyframes float-up {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-100px) scale(0.8);
+    opacity: 0.3;
+  }
+}
+
+.particle:nth-child(1) { left: 10%; top: 80%; animation-delay: 0s; animation-duration: 7s; }
+.particle:nth-child(2) { left: 20%; top: 90%; animation-delay: 1s; animation-duration: 9s; }
+.particle:nth-child(3) { left: 35%; top: 85%; animation-delay: 2s; animation-duration: 8s; }
+.particle:nth-child(4) { left: 50%; top: 75%; animation-delay: 0.5s; animation-duration: 10s; }
+.particle:nth-child(5) { left: 65%; top: 88%; animation-delay: 1.5s; animation-duration: 7.5s; }
+.particle:nth-child(6) { left: 75%; top: 82%; animation-delay: 2.5s; animation-duration: 8.5s; }
+.particle:nth-child(7) { left: 85%; top: 78%; animation-delay: 3s; animation-duration: 9.5s; }
+.particle:nth-child(8) { left: 92%; top: 85%; animation-delay: 0.8s; animation-duration: 7.2s; }
+.particle:nth-child(9) { left: 45%; top: 92%; animation-delay: 1.8s; animation-duration: 8.8s; }
+.particle:nth-child(10) { left: 58%; top: 70%; animation-delay: 2.2s; animation-duration: 9.2s; }
+
+/* Scroll Indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  animation: bounce 2s infinite;
+}
+
+.scroll-indicator svg {
+  width: 24px;
+  height: 24px;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(10px); }
+}
+
+/* ================================================================
+   STATS BAR SECTION
+   ================================================================ */
+.stats {
+  padding: 140px clamp(2rem, 8vw, 10rem);
+  background: var(--bg);
+}
+
+.stats-grid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(3rem, 10vw, 8rem);
+  flex-wrap: wrap;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-number {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(3.5rem, 8vw, 6rem);
+  letter-spacing: 0.03em;
+  color: var(--accent);
+  text-shadow: 0 0 30px rgba(var(--accent-rgb), 0.3);
+  line-height: 1;
+}
+
+.stat-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+}
+
+/* ================================================================
+   MANIFESTO SECTION
+   ================================================================ */
+.manifesto {
+  padding: 140px clamp(2rem, 8vw, 10rem);
+  background: var(--surface-1);
+  position: relative;
+  overflow: hidden;
+}
+
+.manifesto-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.03;
+  pointer-events: none;
+}
+
+.manifesto-content {
+  position: relative;
+  z-index: 1;
+}
+
+.manifesto-quote {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  letter-spacing: 0.03em;
+  line-height: 1.2;
+  max-width: 900px;
+  padding-left: 1.5rem;
+  border-left: 4px solid var(--accent);
+  margin-bottom: 4rem;
+}
+
+.manifesto-body {
+  max-width: 580px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.manifesto-body p {
+  font-size: clamp(1rem, 1.5vw, 1.1rem);
+  color: var(--text-secondary);
+}
+
+.manifesto-footer {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--surface-3);
+}
+
+.manifesto-footer-text {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ================================================================
+   RESPONSIVE
+   ================================================================ */
+@media (max-width: 768px) {
+  .nav {
+    padding: 0.8rem 1rem;
+  }
+  
+  .hero-layer-bws {
+    display: none;
+  }
+  
+  .hero-layer-content {
+    padding: 0 1.5rem;
+  }
+  
+  .hero-cta {
+    flex-direction: column;
+  }
+  
+  .btn {
+    text-align: center;
+  }
+  
+  .stats {
+    padding: 80px 1.5rem;
+  }
+  
+  .stats-grid {
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+  
+  .manifesto {
+    padding: 80px 1.5rem;
+  }
+}
+
+/* ================================================================
+   JOURNEY SECTION (Airplane Map)
+   ================================================================ */
+.journey {
+  position: relative;
+  background: var(--bg);
+}
+
+.journey-container {
+  height: 400vh;
+}
+
+.journey-sticky {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.journey-header {
+  text-align: center;
+  padding: 2rem;
+  padding-top: 4rem;
+}
+
+.journey-tag {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.journey-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  letter-spacing: 0.03em;
+}
+
+.journey-map-wrapper {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.journey-map-svg {
+  width: 100%;
+  max-width: 1200px;
+  height: auto;
+}
+
+/* Location Cards */
+.location-card {
+  position: absolute;
+  width: 280px;
+  background: rgba(10, 10, 10, 0.95);
+  border: 1px solid var(--surface-3);
+  border-radius: 8px;
+  padding: 1.5rem;
+  opacity: 0;
+  transform: scale(0.9);
+  z-index: var(--z-map-cards);
+  pointer-events: none;
+}
+
+.location-card.africa { border-top: 3px solid var(--africa); }
+.location-card.india { border-top: 3px solid var(--india); }
+.location-card.amazon { border-top: 3px solid var(--amazon); }
+
+.location-card-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.8rem;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.25rem;
+}
+
+.location-card.africa .location-card-title { color: var(--africa); }
+.location-card.india .location-card-title { color: var(--india); }
+.location-card.amazon .location-card-title { color: var(--amazon); }
+
+.location-card-subtitle {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.location-card-body {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.location-card-quote {
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  padding-left: 1rem;
+  margin-bottom: 1rem;
+}
+
+.location-card.africa .location-card-quote { border-left: 2px solid var(--africa); }
+.location-card.india .location-card-quote { border-left: 2px solid var(--india); }
+.location-card.amazon .location-card-quote { border-left: 2px solid var(--amazon); }
+
+.location-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.location-card-tag {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.6rem;
+  background: var(--surface-2);
+  border-radius: 3px;
+  color: var(--text-muted);
+}
+
+/* Card positioning */
+.location-card.africa { left: 55%; top: 30%; }
+.location-card.india { left: 60%; top: 25%; }
+.location-card.amazon { left: 15%; top: 50%; }
+
+/* Mobile Journey Fallback */
+.journey-mobile {
+  display: none;
+  padding: 80px 1.5rem;
+}
+
+.journey-mobile-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.journey-mobile-card {
+  background: rgba(10, 10, 10, 0.95);
+  border: 1px solid var(--surface-3);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.journey-mobile-card.africa { border-top: 3px solid var(--africa); }
+.journey-mobile-card.india { border-top: 3px solid var(--india); }
+.journey-mobile-card.amazon { border-top: 3px solid var(--amazon); }
+
+@media (max-width: 768px) {
+  .journey-container {
+    display: none;
+  }
+  
+  .journey-mobile {
+    display: block;
+  }
+  
+  .journey-header {
+    padding: 0 0 2rem 0;
+  }
+}
+
+/* ================================================================
+   GAUNTLET SECTION (3D Tunnel)
+   ================================================================ */
+.gauntlet {
+  position: relative;
+  background: var(--bg);
+}
+
+.gauntlet-container {
+  height: 500vh;
+}
+
+.gauntlet-sticky {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.gauntlet-header {
+  text-align: center;
+  padding: 2rem;
+  padding-top: 4rem;
+  position: relative;
+  z-index: 10;
+}
+
+.gauntlet-tag {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.gauntlet-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  letter-spacing: 0.03em;
+  margin-bottom: 1rem;
+}
+
+.gauntlet-body {
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.gauntlet-tunnel {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Tunnel Walls */
+.tunnel-wall {
+  position: absolute;
+  background: linear-gradient(to bottom, transparent, rgba(var(--accent-rgb), 0.1));
+  opacity: 0.1;
+}
+
+.tunnel-wall-top {
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 30%;
+  border-bottom: 1px solid rgba(var(--accent-rgb), 0.2);
+}
+
+.tunnel-wall-bottom {
+  bottom: 0;
+  left: 10%;
+  right: 10%;
+  height: 30%;
+  border-top: 1px solid rgba(var(--accent-rgb), 0.2);
+}
+
+.tunnel-wall-left {
+  top: 10%;
+  bottom: 10%;
+  left: 0;
+  width: 20%;
+  border-right: 1px solid rgba(var(--accent-rgb), 0.2);
+}
+
+.tunnel-wall-right {
+  top: 10%;
+  bottom: 10%;
+  right: 0;
+  width: 20%;
+  border-left: 1px solid rgba(var(--accent-rgb), 0.2);
+}
+
+/* Light at the end */
+.tunnel-light {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.8), rgba(var(--accent-rgb),0.4), transparent);
+  filter: blur(20px);
+}
+
+/* Gates */
+.tunnel-gate {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateZ(-2000px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid rgba(var(--accent-rgb), 0.4);
+  background: transparent;
+}
+
+.tunnel-gate-1 {
+  width: 90vw;
+  height: 80vh;
+  border-color: rgba(var(--accent-rgb), 0.4);
+}
+
+.tunnel-gate-2 {
+  width: 60vw;
+  height: 55vh;
+  border-color: rgba(var(--accent-rgb), 0.55);
+}
+
+.tunnel-gate-3 {
+  width: 35vw;
+  height: 35vh;
+  border-color: rgba(var(--accent-rgb), 0.7);
+}
+
+.tunnel-gate-4 {
+  width: 20vw;
+  height: 20vh;
+  border-color: var(--accent);
+  box-shadow: 0 0 60px rgba(var(--accent-rgb), 0.5), inset 0 0 60px rgba(var(--accent-rgb), 0.2);
+}
+
+.gate-number {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(4rem, 15vw, 12rem);
+  letter-spacing: 0.03em;
+  color: var(--accent);
+  text-shadow: 0 0 40px rgba(var(--accent-rgb), 0.5);
+  line-height: 1;
+}
+
+.gate-subtext {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+}
+
+/* Mystery Box */
+.mystery-box {
+  padding: 80px clamp(2rem, 8vw, 10rem);
+  display: flex;
+  justify-content: center;
+}
+
+.mystery-card {
+  max-width: 500px;
+  padding: 2.5rem;
+  background: var(--surface-1);
+  border-radius: 12px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.mystery-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 12px;
+  padding: 2px;
+  background: linear-gradient(90deg, var(--accent), #a855f7, var(--accent));
+  background-size: 200% 100%;
+  animation: gradient-slide 3s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+@keyframes gradient-slide {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.mystery-icon {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 5rem;
+  color: var(--accent);
+  text-shadow: 0 0 30px rgba(var(--accent-rgb), 0.5);
+  animation: pulse 2s ease-in-out infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.05); }
+}
+
+.mystery-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  letter-spacing: 0.03em;
+  margin-bottom: 1rem;
+}
+
+.mystery-body {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* Mobile Gauntlet Fallback */
+.gauntlet-mobile {
+  display: none;
+  padding: 80px 1.5rem;
+}
+
+.gauntlet-mobile-blocks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 400px;
+  margin: 0 auto 3rem;
+}
+
+.gauntlet-mobile-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(var(--accent-rgb), 0.4);
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.gauntlet-mobile-block:nth-child(1) {
+  width: 100%;
+  border-color: rgba(var(--accent-rgb), 0.4);
+}
+
+.gauntlet-mobile-block:nth-child(2) {
+  width: 85%;
+  border-color: rgba(var(--accent-rgb), 0.55);
+}
+
+.gauntlet-mobile-block:nth-child(3) {
+  width: 70%;
+  border-color: rgba(var(--accent-rgb), 0.7);
+}
+
+.gauntlet-mobile-block:nth-child(4) {
+  width: 55%;
+  border-color: var(--accent);
+  box-shadow: 0 0 30px rgba(var(--accent-rgb), 0.4);
+}
+
+.gauntlet-mobile-number {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 2.5rem;
+  color: var(--accent);
+  text-shadow: 0 0 20px rgba(var(--accent-rgb), 0.4);
+}
+
+.gauntlet-mobile-text {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+@media (max-width: 768px) {
+  .gauntlet-container {
+    display: none;
+  }
+  
+  .gauntlet-mobile {
+    display: block;
+  }
+}
+
+/* ================================================================
+   APPLY SECTION
+   ================================================================ */
+.apply {
+  padding: 140px clamp(2rem, 8vw, 10rem);
+  background: var(--surface-1);
+  text-align: center;
+}
+
+.apply-tag {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.apply-headline {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  letter-spacing: 0.03em;
+  margin-bottom: 1.5rem;
+}
+
+.apply-body {
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  color: var(--text-secondary);
+  max-width: 700px;
+  margin: 0 auto 3rem;
+  line-height: 1.8;
+}
+
+.apply-punchline {
+  margin-bottom: 4rem;
+  position: relative;
+}
+
+.apply-punchline::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 200px;
+  background: radial-gradient(ellipse, rgba(var(--accent-rgb), 0.15), transparent);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.apply-punchline-text {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  letter-spacing: 0.03em;
+  line-height: 1.2;
+  font-style: italic;
+  color: var(--accent);
+  text-shadow: 0 0 40px rgba(var(--accent-rgb), 0.4);
+  position: relative;
+  z-index: 1;
+}
+
+/* Form Card */
+.form-wrapper {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.form-header {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  letter-spacing: 0.03em;
+  margin-bottom: 2rem;
+}
+
+.form-card {
+  background: rgba(13, 13, 13, 0.95);
+  border-radius: 12px;
+  padding: 2.5rem;
+  position: relative;
+  overflow: hidden;
+  z-index: var(--z-form);
+}
+
+.form-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 12px;
+  padding: 2px;
+  background: linear-gradient(90deg, var(--accent), rgba(var(--accent-rgb), 0.3), var(--accent));
+  background-size: 200% 100%;
+  animation: gradient-slide 4s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.form-fields {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-field {
+  position: relative;
+}
+
+.form-input {
+  width: 100%;
+  padding: 1rem;
+  background: var(--surface-2);
+  border: 1px solid var(--surface-3);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.form-input::placeholder {
+  color: var(--text-muted);
+}
+
+.form-input.error {
+  border-color: var(--error);
+  animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.form-select {
+  width: 100%;
+  padding: 1rem;
+  background: var(--surface-2);
+  border: 1px solid var(--surface-3);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.form-select.error {
+  border-color: var(--error);
+  animation: shake 0.5s ease;
+}
+
+.form-submit {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.2rem;
+  letter-spacing: 0.05em;
+  padding: 1rem 3rem;
+  background: var(--accent);
+  color: black;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.form-submit:hover:not(:disabled) {
+  transform: scale(1.02);
+}
+
+.form-submit:disabled {
+  cursor: not-allowed;
+}
+
+.form-submit.success {
+  background: var(--success);
+}
+
+/* Live Counter */
+.live-counter {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--success);
+  border-radius: 50%;
+  animation: live-pulse 2s ease-in-out infinite;
+}
+
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0, 232, 123, 0.4); }
+  50% { opacity: 0.7; box-shadow: 0 0 0 8px rgba(0, 232, 123, 0); }
+}
+
+.live-counter-number {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+
+.live-counter-text {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.form-microcopy {
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* The Dare */
+.apply-dare {
+  margin-top: 4rem;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+/* Submit Airplane Wipe */
+.submit-wipe {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 232, 123, 0.1);
+  z-index: var(--z-submit-wipe);
+  pointer-events: none;
+  clip-path: inset(0 100% 0 0);
+}
+
+.submit-airplane {
+  position: fixed;
+  top: 50%;
+  left: -100px;
+  transform: translateY(-50%);
+  z-index: var(--z-submit-plane);
+  pointer-events: none;
+}
+
+.submit-airplane svg {
+  width: 80px;
+  height: 80px;
+  fill: var(--accent);
+}
+
+/* ================================================================
+   FOOTER
+   ================================================================ */
+.footer {
+  padding: 2rem clamp(2rem, 8vw, 10rem);
+  background: var(--bg);
+  border-top: 1px solid var(--surface-2);
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-copyright {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.footer-nav {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.footer-nav a {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-nav a:hover {
+  color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  .apply {
+    padding: 80px 1.5rem;
+  }
+  
+  .form-fields {
+    grid-template-columns: 1fr;
+  }
+  
+  .apply-punchline::before {
+    width: 100%;
+  }
+  
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .footer-nav {
+    justify-content: center;
+    gap: 1rem;
+  }
+}
+</style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="nav" id="nav">
-        <a href="#" class="nav-logo">BEAST <span>WORLD</span></a>
-        <a href="#apply" class="nav-apply">Apply</a>
+
+<!-- Navigation -->
+<nav class="nav">
+  <div class="nav-logo">
+    <span>BEAST</span><span>WORLD</span>
+  </div>
+  <a href="#apply" class="nav-apply">Apply</a>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero" id="hero">
+  <!-- Layer 0: Background Video -->
+  <div class="hero-layer-video">
+    <video class="hero-video" autoplay muted loop playsinline poster="https://beastwp1.wpengine.com/wp-content/uploads/2024/07/video-cover-image-1-1.webp">
+      <source src="https://beastwp1.wpengine.com/wp-content/uploads/2025/03/Bp-Sizzle-Website-Showreel.m4v" type="video/mp4">
+    </video>
+    <div class="hero-video-overlay"></div>
+  </div>
+  
+  <!-- Layer 1: Decorative BWS Text -->
+  <div class="hero-layer-bws">BWS</div>
+  
+  <!-- Layer 2: Hero Content -->
+  <div class="hero-layer-content">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      <span class="hero-badge-text">Beast Philanthropy × Alpha School</span>
+    </div>
+    
+    <h1 class="hero-headline">
+      <span class="hero-headline-line">One Year.</span>
+      <span class="hero-headline-line">Three Continents.</span>
+      <span class="hero-headline-line text-accent">You Will Not Be The Same.</span>
+    </h1>
+    
+    <p class="hero-subhead">40 teenagers. Three continents. Build schools, power villages, crush academics, compete every single week, all filmed by Beast Philanthropy.</p>
+    
+    <div class="hero-cta">
+      <a href="#apply" class="btn btn-primary">Apply Now</a>
+      <a href="#manifesto" class="btn btn-ghost">Learn More</a>
+    </div>
+  </div>
+  
+  <!-- Layer 3: Particles -->
+  <div class="hero-layer-particles">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+  </div>
+  
+  <!-- Scroll Indicator -->
+  <div class="scroll-indicator">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </div>
+</section>
+
+<!-- Stats Bar Section -->
+<section class="stats" id="stats">
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-number" data-target="400000000">0</div>
+      <div class="stat-label">People Watching</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number" data-target="40">0</div>
+      <div class="stat-label">Students Selected</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number" data-target="3">0</div>
+      <div class="stat-label">Continents</div>
+    </div>
+  </div>
+</section>
+
+<!-- Manifesto Section -->
+<section class="manifesto" id="manifesto">
+  <!-- Background SVG contours -->
+  <svg class="manifesto-bg" viewBox="0 0 1000 600" preserveAspectRatio="none">
+    <path d="M0,100 Q250,50 500,100 T1000,100" stroke="#333" stroke-width="1" fill="none"/>
+    <path d="M0,200 Q250,150 500,200 T1000,200" stroke="#333" stroke-width="1" fill="none"/>
+    <path d="M0,300 Q250,250 500,300 T1000,300" stroke="#333" stroke-width="1" fill="none"/>
+    <path d="M0,400 Q250,350 500,400 T1000,400" stroke="#333" stroke-width="1" fill="none"/>
+    <path d="M0,500 Q250,450 500,500 T1000,500" stroke="#333" stroke-width="1" fill="none"/>
+  </svg>
+  
+  <div class="manifesto-content">
+    <blockquote class="manifesto-quote">
+      Beast World exists because there is no program on Earth that takes teenagers and puts them through something <span class="text-accent">this hard, this real, and this relentless</span>... for this long.
+    </blockquote>
+    
+    <div class="manifesto-body">
+      <p>This is not study abroad. This is not a service trip. You will live in communities most people will never see, build infrastructure that changes thousands of lives, present your work every week in a language you did not know existed three months ago, and do it all while 400 million people watch.</p>
+      
+      <p>You compete on a live scoreboard all year. Two hours of Ivy League caliber academics every single day. No exceptions. And every moment is filmed for the world to see.</p>
+      
+      <p>You walk out as someone who has discovered what they are made of. Not because someone told you, but because you proved it under a year of unrelenting pressure.</p>
+    </div>
+    
+    <div class="manifesto-footer">
+      <span class="manifesto-footer-text">Built by Beast Philanthropy × Alpha School</span>
+    </div>
+  </div>
+</section>
+
+<!-- Journey Section (Airplane Map) -->
+<section class="journey" id="journey">
+  <div class="journey-container">
+    <div class="journey-sticky">
+      <div class="journey-header">
+        <p class="journey-tag">Where You Are Going</p>
+        <h2 class="journey-title">Three continents. Real work. Real impact.</h2>
+      </div>
+      
+      <div class="journey-map-wrapper">
+        <!-- SVG World Map with Flight Path and Airplane -->
+        <svg class="journey-map-svg" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet">
+          <!-- Simplified World Map Continents -->
+          <g class="continents" fill="#1a1a1a" stroke="#2a2a2a" stroke-width="0.5">
+            <!-- North America -->
+            <path d="M50,120 L120,80 L180,70 L240,90 L280,120 L290,160 L270,200 L230,230 L200,280 L180,260 L140,240 L100,220 L60,180 L50,120 Z"/>
+            <!-- South America -->
+            <path d="M200,290 L230,280 L270,310 L290,360 L300,420 L280,460 L240,470 L200,450 L180,400 L170,350 L180,310 L200,290 Z"/>
+            <!-- Europe -->
+            <path d="M440,100 L480,80 L520,85 L540,110 L530,140 L500,160 L460,155 L440,130 L440,100 Z"/>
+            <!-- Africa -->
+            <path d="M440,180 L480,170 L530,180 L560,220 L570,280 L550,340 L520,380 L470,390 L430,360 L420,300 L430,240 L440,180 Z"/>
+            <!-- Asia -->
+            <path d="M560,80 L620,60 L700,70 L780,90 L820,130 L800,180 L760,200 L720,190 L680,210 L640,200 L600,180 L560,150 L550,110 L560,80 Z"/>
+            <!-- India -->
+            <path d="M640,210 L680,200 L720,220 L710,270 L680,310 L640,290 L630,250 L640,210 Z"/>
+            <!-- Australia -->
+            <path d="M780,340 L840,320 L890,340 L900,390 L870,430 L820,440 L780,420 L770,380 L780,340 Z"/>
+          </g>
+          
+          <!-- Flight Path Background (dashed, dim) -->
+          <path id="flightPathBg" 
+                d="M250,175 C350,120 420,180 480,260 C540,200 600,180 680,210 C600,280 400,350 280,290" 
+                fill="none" 
+                stroke="#333" 
+                stroke-width="2" 
+                stroke-dasharray="8,8"/>
+          
+          <!-- Flight Path Progress (solid, accent, animated) -->
+          <path id="flightPath" 
+                d="M250,175 C350,120 420,180 480,260 C540,200 600,180 680,210 C600,280 400,350 280,290" 
+                fill="none" 
+                stroke="var(--accent)" 
+                stroke-width="2"
+                class="flight-path-progress"/>
+          
+          <!-- Waypoint Markers -->
+          <g class="waypoints">
+            <!-- Home (USA) -->
+            <circle cx="250" cy="175" r="6" fill="#ffffff" class="waypoint home"/>
+            <text x="250" y="160" text-anchor="middle" fill="#666" font-family="Space Grotesk" font-size="10" letter-spacing="2">HOME</text>
+            
+            <!-- Africa -->
+            <circle cx="480" cy="260" r="6" fill="var(--africa)" class="waypoint africa-dot"/>
+            <text x="480" y="245" text-anchor="middle" fill="var(--africa)" font-family="Space Grotesk" font-size="10" letter-spacing="2">AFRICA</text>
+            
+            <!-- India -->
+            <circle cx="680" cy="210" r="6" fill="var(--india)" class="waypoint india-dot"/>
+            <text x="680" y="195" text-anchor="middle" fill="var(--india)" font-family="Space Grotesk" font-size="10" letter-spacing="2">INDIA</text>
+            
+            <!-- Amazon -->
+            <circle cx="280" cy="290" r="6" fill="var(--amazon)" class="waypoint amazon-dot"/>
+            <text x="280" y="310" text-anchor="middle" fill="var(--amazon)" font-family="Space Grotesk" font-size="10" letter-spacing="2">THE AMAZON</text>
+          </g>
+          
+          <!-- Airplane (inside SVG, same coordinate system) -->
+          <g id="airplane" class="airplane">
+            <path d="M-15,0 L15,0 L12,-3 L5,-3 L5,-8 L3,-10 L1,-8 L1,-3 L-5,-3 L-12,-3 L-15,0 L-10,2 L-5,2 L-5,5 L5,5 L5,2 L10,2 Z" 
+                  fill="#ffffff" 
+                  transform="scale(1.2)"/>
+          </g>
+        </svg>
+        
+        <!-- Location Cards (HTML, positioned with CSS) -->
+        <div class="location-card africa" id="card-africa">
+          <h3 class="location-card-title">Africa</h3>
+          <p class="location-card-subtitle">Rotation One. ~10 Weeks</p>
+          <p class="location-card-body">Cocoa villages in rural West Africa. You will build Beast Schools alongside the communities that need them. Solar power, Starlink, wells, classrooms.</p>
+          <p class="location-card-quote">"You will know every family by name."</p>
+          <div class="location-card-tags">
+            <span class="location-card-tag">Beast Schools</span>
+            <span class="location-card-tag">Solar Install</span>
+            <span class="location-card-tag">Well Construction</span>
+            <span class="location-card-tag">Starlink Setup</span>
+          </div>
+        </div>
+        
+        <div class="location-card india" id="card-india">
+          <h3 class="location-card-title">India</h3>
+          <p class="location-card-subtitle">Rotation Two. ~10 Weeks</p>
+          <p class="location-card-body">Navigate one of the most complex cultures on Earth. Build projects that serve real needs: clean water, education, economic development. Present your work to community leaders who hold nothing back.</p>
+          <p class="location-card-quote">"The hardest place to earn trust. The most rewarding when you do."</p>
+          <div class="location-card-tags">
+            <span class="location-card-tag">Clean Water</span>
+            <span class="location-card-tag">Education</span>
+            <span class="location-card-tag">Econ Dev</span>
+            <span class="location-card-tag">Community Trust</span>
+          </div>
+        </div>
+        
+        <div class="location-card amazon" id="card-amazon">
+          <h3 class="location-card-title">The Amazon</h3>
+          <p class="location-card-subtitle">Rotation Three. ~10 Weeks</p>
+          <p class="location-card-body">Remote communities in Ecuador. Extreme conditions. Physical intensity. Everything is harder here. The heat, the terrain, the logistics. Build here and you can build anywhere on Earth.</p>
+          <p class="location-card-quote">"If you can build here, you can build anywhere."</p>
+          <div class="location-card-tags">
+            <span class="location-card-tag">Extreme Build</span>
+            <span class="location-card-tag">Remote Ops</span>
+            <span class="location-card-tag">Physical Intensity</span>
+            <span class="location-card-tag">Final Push</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Mobile Fallback -->
+  <div class="journey-mobile">
+    <div class="journey-header">
+      <p class="journey-tag">Where You Are Going</p>
+      <h2 class="journey-title">Three continents. Real work. Real impact.</h2>
+    </div>
+    
+    <div class="journey-mobile-cards">
+      <div class="journey-mobile-card africa">
+        <h3 class="location-card-title" style="color: var(--africa);">Africa</h3>
+        <p class="location-card-subtitle">Rotation One. ~10 Weeks</p>
+        <p class="location-card-body">Cocoa villages in rural West Africa. You will build Beast Schools alongside the communities that need them. Solar power, Starlink, wells, classrooms.</p>
+        <p class="location-card-quote" style="border-left: 2px solid var(--africa);">"You will know every family by name."</p>
+        <div class="location-card-tags">
+          <span class="location-card-tag">Beast Schools</span>
+          <span class="location-card-tag">Solar Install</span>
+          <span class="location-card-tag">Well Construction</span>
+          <span class="location-card-tag">Starlink Setup</span>
+        </div>
+      </div>
+      
+      <div class="journey-mobile-card india">
+        <h3 class="location-card-title" style="color: var(--india);">India</h3>
+        <p class="location-card-subtitle">Rotation Two. ~10 Weeks</p>
+        <p class="location-card-body">Navigate one of the most complex cultures on Earth. Build projects that serve real needs: clean water, education, economic development. Present your work to community leaders who hold nothing back.</p>
+        <p class="location-card-quote" style="border-left: 2px solid var(--india);">"The hardest place to earn trust. The most rewarding when you do."</p>
+        <div class="location-card-tags">
+          <span class="location-card-tag">Clean Water</span>
+          <span class="location-card-tag">Education</span>
+          <span class="location-card-tag">Econ Dev</span>
+          <span class="location-card-tag">Community Trust</span>
+        </div>
+      </div>
+      
+      <div class="journey-mobile-card amazon">
+        <h3 class="location-card-title" style="color: var(--amazon);">The Amazon</h3>
+        <p class="location-card-subtitle">Rotation Three. ~10 Weeks</p>
+        <p class="location-card-body">Remote communities in Ecuador. Extreme conditions. Physical intensity. Everything is harder here. The heat, the terrain, the logistics. Build here and you can build anywhere on Earth.</p>
+        <p class="location-card-quote" style="border-left: 2px solid var(--amazon);">"If you can build here, you can build anywhere."</p>
+        <div class="location-card-tags">
+          <span class="location-card-tag">Extreme Build</span>
+          <span class="location-card-tag">Remote Ops</span>
+          <span class="location-card-tag">Physical Intensity</span>
+          <span class="location-card-tag">Final Push</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Gauntlet Section (3D Tunnel) -->
+<section class="gauntlet" id="gauntlet">
+  <div class="gauntlet-container">
+    <div class="gauntlet-sticky">
+      <div class="gauntlet-header">
+        <p class="gauntlet-tag">Selection</p>
+        <h2 class="gauntlet-title">You do not get in by applying. You get in by surviving.</h2>
+        <p class="gauntlet-body">This is not a school application. This is a gauntlet. A series of challenges will determine who is serious, and who is just watching.</p>
+      </div>
+      
+      <div class="gauntlet-tunnel">
+        <!-- Tunnel Walls -->
+        <div class="tunnel-wall tunnel-wall-top"></div>
+        <div class="tunnel-wall tunnel-wall-bottom"></div>
+        <div class="tunnel-wall tunnel-wall-left"></div>
+        <div class="tunnel-wall tunnel-wall-right"></div>
+        
+        <!-- Light at the end -->
+        <div class="tunnel-light"></div>
+        
+        <!-- Gates -->
+        <div class="tunnel-gate tunnel-gate-1">
+          <span class="gate-number">100,000+</span>
+          <span class="gate-subtext">enter their name</span>
+        </div>
+        
+        <div class="tunnel-gate tunnel-gate-2">
+          <span class="gate-number">1,000</span>
+          <span class="gate-subtext">survive the challenges</span>
+        </div>
+        
+        <div class="tunnel-gate tunnel-gate-3">
+          <span class="gate-number">400</span>
+          <span class="gate-subtext">compete in the Beast Tournament</span>
+        </div>
+        
+        <div class="tunnel-gate tunnel-gate-4">
+          <span class="gate-number">40</span>
+          <span class="gate-subtext">are chosen</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Mobile Fallback -->
+  <div class="gauntlet-mobile">
+    <div class="gauntlet-header" style="padding-top: 0;">
+      <p class="gauntlet-tag">Selection</p>
+      <h2 class="gauntlet-title">You do not get in by applying. You get in by surviving.</h2>
+      <p class="gauntlet-body">This is not a school application. This is a gauntlet. A series of challenges will determine who is serious, and who is just watching.</p>
+    </div>
+    
+    <div class="gauntlet-mobile-blocks">
+      <div class="gauntlet-mobile-block">
+        <span class="gauntlet-mobile-number">100,000+</span>
+        <span class="gauntlet-mobile-text">enter their name</span>
+      </div>
+      <div class="gauntlet-mobile-block">
+        <span class="gauntlet-mobile-number">1,000</span>
+        <span class="gauntlet-mobile-text">survive the challenges</span>
+      </div>
+      <div class="gauntlet-mobile-block">
+        <span class="gauntlet-mobile-number">400</span>
+        <span class="gauntlet-mobile-text">compete in the Beast Tournament</span>
+      </div>
+      <div class="gauntlet-mobile-block">
+        <span class="gauntlet-mobile-number">40</span>
+        <span class="gauntlet-mobile-text">are chosen</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Mystery Box -->
+  <div class="mystery-box">
+    <div class="mystery-card">
+      <div class="mystery-icon">?</div>
+      <h3 class="mystery-title">What are the challenges?</h3>
+      <p class="mystery-body">You will find out when they drop. All we will say is this: they will test everything, your brain, your grit, your creativity, and how badly you actually want this. Enter your name. The first challenge comes to you.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Apply Section -->
+<section class="apply" id="apply">
+  <p class="apply-tag">You Will Not Be The Same</p>
+  
+  <h2 class="apply-headline">You Will Not Be The Same.</h2>
+  
+  <p class="apply-body">One year from now, you will be someone who has lived in three communities on three continents, built things with your hands that matter, earned the respect of people across the world, in their language, and done it all while the world watched.</p>
+  
+  <div class="apply-punchline">
+    <p class="apply-punchline-text">
+      That person is the reward.<br>
+      Everything else is noise.
+    </p>
+  </div>
+  
+  <div class="form-wrapper">
+    <h3 class="form-header">Enter Your Name.</h3>
+    
+    <div class="form-card">
+      <div class="form-fields">
+        <div class="form-field">
+          <input type="text" class="form-input" id="form-name" placeholder="Full Name" autocomplete="name">
+        </div>
+        <div class="form-field">
+          <input type="email" class="form-input" id="form-email" placeholder="Email" autocomplete="email">
+        </div>
+        <div class="form-field">
+          <select class="form-select" id="form-age">
+            <option value="" disabled selected>Age</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+          </select>
+        </div>
+      </div>
+      
+      <button type="button" class="form-submit" id="form-submit">I'm In</button>
+      
+      <div class="live-counter">
+        <span class="live-dot"></span>
+        <span class="live-counter-number" id="live-counter">0</span>
+        <span class="live-counter-text">have already entered</span>
+      </div>
+      
+      <p class="form-microcopy">Takes 10 seconds. The challenges start soon.</p>
+    </div>
+  </div>
+  
+  <p class="apply-dare">Think you are not ready? You are probably right.</p>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-content">
+    <span class="footer-copyright">Beast Philanthropy × Alpha School, 2026</span>
+    <nav class="footer-nav">
+      <a href="#">For Parents</a>
+      <a href="#">Program Details</a>
+      <a href="#">Cost & Scholarships</a>
+      <a href="#">Team & Safety</a>
+      <a href="#">FAQ</a>
     </nav>
+  </div>
+</footer>
 
-    <!-- Section 1: Hero -->
-    <section class="hero section-fade-bottom" id="hero">
-        <!-- Floating SVG decoration -->
-        <svg class="floating-svg float-1" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="200" cy="200" r="180" stroke="currentColor" stroke-width="0.5"/>
-            <circle cx="200" cy="200" r="140" stroke="currentColor" stroke-width="0.5"/>
-            <circle cx="200" cy="200" r="100" stroke="currentColor" stroke-width="0.5"/>
-            <circle cx="200" cy="200" r="60" stroke="currentColor" stroke-width="0.5"/>
-        </svg>
+<!-- Submit Airplane Wipe Elements -->
+<div class="submit-wipe" id="submit-wipe"></div>
+<div class="submit-airplane" id="submit-airplane">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+  </svg>
+</div>
 
-        <!-- Particle field -->
-        <div class="particles" aria-hidden="true">
-            <div class="particle" style="left: 10%; animation-duration: 8s; animation-delay: 0s;"></div>
-            <div class="particle" style="left: 20%; animation-duration: 12s; animation-delay: 2s;"></div>
-            <div class="particle" style="left: 35%; animation-duration: 10s; animation-delay: 4s;"></div>
-            <div class="particle" style="left: 50%; animation-duration: 14s; animation-delay: 1s;"></div>
-            <div class="particle" style="left: 65%; animation-duration: 9s; animation-delay: 3s;"></div>
-            <div class="particle" style="left: 80%; animation-duration: 11s; animation-delay: 5s;"></div>
-            <div class="particle" style="left: 90%; animation-duration: 13s; animation-delay: 2.5s;"></div>
-        </div>
+<!-- GSAP Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/MotionPathPlugin.min.js"></script>
 
-        <!-- Hero background video -->
-        <video autoplay muted loop playsinline poster="https://beastwp1.wpengine.com/wp-content/uploads/2024/07/video-cover-image-1-1.webp" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.25;z-index:0;">
-            <source src="https://beastwp1.wpengine.com/wp-content/uploads/2025/03/Bp-Sizzle-Website-Showreel.m4v" type="video/mp4">
-        </video>
+<script>
+// Register GSAP plugins
+gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
-        <div class="hero-content">
-            <div class="partnership-badge">Beast Philanthropy × Alpha School</div>
+// Mobile detection
+const isMobile = window.innerWidth <= 768;
 
-            <h1 class="hero-headline">
-                <span class="line">One Year.</span>
-                <span class="line">Three Continents.</span>
-                <span class="line accent">You Will Not Be The Same.</span>
-            </h1>
+// ================================================================
+// NAVIGATION AUTO-HIDE
+// ================================================================
+let lastScrollY = window.scrollY;
+const nav = document.querySelector('.nav');
 
-            <p class="hero-subhead">40 teenagers. Three continents. Build schools, power villages, crush academics, compete every single week, all filmed by Beast Philanthropy.</p>
+window.addEventListener('scroll', () => {
+  const currentScrollY = window.scrollY;
+  
+  if (currentScrollY > 100) {
+    if (currentScrollY > lastScrollY) {
+      nav.classList.add('hidden');
+    } else {
+      nav.classList.remove('hidden');
+    }
+  } else {
+    nav.classList.remove('hidden');
+  }
+  
+  lastScrollY = currentScrollY;
+}, { passive: true });
 
-            <div class="hero-stats">
-                <div class="stat">
-                    <span class="stat-number massive" data-count="400">400M+</span>
-                    <span class="stat-label">People Watching</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-number" data-count="40">40</span>
-                    <span class="stat-label">Students Selected</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-number" data-count="3">3</span>
-                    <span class="stat-label">Continents</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-number" data-count="1">1</span>
-                    <span class="stat-label">School Year</span>
-                </div>
-            </div>
+// ================================================================
+// SMOOTH SCROLL FOR ANCHOR LINKS
+// ================================================================
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
 
-            <div class="hero-ctas">
-                <a href="#apply" class="btn-primary">Apply Now</a>
-                <a href="#manifesto" class="btn-secondary">Learn More</a>
-            </div>
-        </div>
+// ================================================================
+// HERO ANIMATIONS
+// ================================================================
 
-        <!-- Scroll indicator -->
-        <div class="scroll-indicator" id="scroll-indicator">
-            <span class="scroll-indicator-text">Scroll</span>
-            <div class="scroll-indicator-arrow"></div>
-        </div>
-    </section>
+// Prevent flash: set initial states
+gsap.set('.hero-badge', { opacity: 0, y: 20 });
+gsap.set('.hero-headline-line', { opacity: 0, clipPath: 'inset(0 100% 0 0)' });
+gsap.set('.hero-subhead', { opacity: 0, y: 20 });
+gsap.set('.hero-cta', { opacity: 0, y: 20 });
+gsap.set('.scroll-indicator', { opacity: 0 });
 
-    <!-- Section 2: Manifesto -->
-    <section class="manifesto" id="manifesto">
-        <!-- Large decorative SVG -->
-        <svg class="floating-svg large float-2" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M100,300 Q200,100 300,300 T500,300" stroke="currentColor" stroke-width="1" fill="none"/>
-            <path d="M100,350 Q200,150 300,350 T500,350" stroke="currentColor" stroke-width="1" fill="none"/>
-            <path d="M100,400 Q200,200 300,400 T500,400" stroke="currentColor" stroke-width="1" fill="none"/>
-        </svg>
+// On-load animation timeline (plays ONCE, no ScrollTrigger)
+const heroTl = gsap.timeline({ delay: 0.3 });
 
-        <blockquote class="manifesto-quote">
-            Beast World exists because there is no program on Earth that takes teenagers and puts them through something <span class="accent">this hard, this real, and this relentless</span>... for this long.
-        </blockquote>
+heroTl
+  .to('.hero-badge', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' })
+  .to('.hero-headline-line', { 
+    opacity: 1, 
+    clipPath: 'inset(0 0% 0 0)', 
+    duration: 0.8, 
+    stagger: 0.2, 
+    ease: 'power3.out' 
+  }, '-=0.3')
+  .to('.hero-subhead', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.2')
+  .to('.hero-cta', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.3')
+  .to('.scroll-indicator', { opacity: 1, duration: 0.5 }, '-=0.2');
 
-        <div class="manifesto-body">
-            <p>This is not study abroad. This is not a service trip. You will live in communities most people will never see, build infrastructure that changes thousands of lives, present your work every week in a language you did not know existed three months ago, and do it all while 400 million people watch.</p>
+// Scroll indicator fade out (once: true, never reappears)
+ScrollTrigger.create({
+  trigger: '.hero',
+  start: '50px top',
+  onEnter: () => {
+    gsap.to('.scroll-indicator', { opacity: 0, duration: 0.3 });
+  },
+  once: true
+});
 
-            <p>You compete on a live scoreboard all year. Two hours of Ivy League caliber academics every single day. No exceptions. And every moment is filmed for the world to see.</p>
+// ================================================================
+// HERO PARALLAX LAYERS
+// ================================================================
+// Layer 0: Video (slowest, y moves 50px)
+gsap.to('.hero-layer-video', {
+  y: 50,
+  ease: 'none',
+  scrollTrigger: {
+    trigger: '.hero',
+    start: 'top top',
+    end: '+=150%',
+    scrub: true
+  }
+});
 
-            <p>You walk out as someone who has discovered what they are made of. Not because someone told you, but because you proved it under a year of unrelenting pressure.</p>
-        </div>
+// Layer 1: BWS decorative text (slow, y moves 150px)
+gsap.to('.hero-layer-bws', {
+  y: 150,
+  ease: 'none',
+  scrollTrigger: {
+    trigger: '.hero',
+    start: 'top top',
+    end: '+=150%',
+    scrub: true
+  }
+});
 
-        <footer class="manifesto-footer">
-            <p class="manifesto-footer-text">Built by Beast Philanthropy × Alpha School</p>
-        </footer>
-    </section>
+// Layer 2: Content (medium, y moves 80px)
+gsap.to('.hero-layer-content', {
+  y: 80,
+  ease: 'none',
+  scrollTrigger: {
+    trigger: '.hero',
+    start: 'top top',
+    end: '+=150%',
+    scrub: true
+  }
+});
 
-    <!-- Section 3: Locations -->
-    <section class="locations" id="locations">
-        <div class="locations-header">
-            <p class="locations-tag">Where You're Going</p>
-            <h2 class="locations-title">Three continents. Real work. Real impact.</h2>
-            <p class="locations-intro">You will spend 10 weeks in each location with your team of 40. Every rotation, you set an ambitious goal, execute it, and leave something permanent behind.</p>
-        </div>
+// Layer 3: Particles (fast, y moves 250px)
+gsap.to('.hero-layer-particles', {
+  y: 250,
+  ease: 'none',
+  scrollTrigger: {
+    trigger: '.hero',
+    start: 'top top',
+    end: '+=150%',
+    scrub: true
+  }
+});
 
-        <div class="horizontal-wrapper">
-            <div class="horizontal-track">
-                <!-- Africa Panel -->
-                <div class="location-panel africa">
-                    <h3 class="location-name">Africa</h3>
-                    <p class="location-subtitle">Rotation One, ~10 Weeks</p>
-                    <p class="location-description">Cocoa villages in rural West Africa. You will build Beast Schools alongside the communities that need them. Solar power, Starlink, wells, classrooms. Real construction. Real stakes.</p>
-                    <p class="location-quote">"You will know every family by name."</p>
-                    <div class="location-tags">
-                        <span class="location-tag">Beast Schools</span>
-                        <span class="location-tag">Solar Install</span>
-                        <span class="location-tag">Well Construction</span>
-                        <span class="location-tag">Starlink Setup</span>
-                    </div>
-                </div>
+// ================================================================
+// STATS COUNTER ANIMATION (once: true, never reverse)
+// ================================================================
+const statNumbers = document.querySelectorAll('.stat-number');
 
-                <!-- India Panel -->
-                <div class="location-panel india">
-                    <h3 class="location-name">India</h3>
-                    <p class="location-subtitle">Rotation Two, ~10 Weeks</p>
-                    <p class="location-description">Navigate one of the most complex cultures on Earth. Build projects that serve real needs: clean water, education, economic development. Present your work to community leaders who hold nothing back.</p>
-                    <p class="location-quote">"The hardest place to earn trust. The most rewarding when you do."</p>
-                    <div class="location-tags">
-                        <span class="location-tag">Clean Water</span>
-                        <span class="location-tag">Education</span>
-                        <span class="location-tag">Econ Dev</span>
-                        <span class="location-tag">Community Trust</span>
-                    </div>
-                </div>
-
-                <!-- Amazon Panel -->
-                <div class="location-panel amazon">
-                    <h3 class="location-name">The Amazon</h3>
-                    <p class="location-subtitle">Rotation Three, ~10 Weeks</p>
-                    <p class="location-description">Remote communities in Ecuador. Extreme conditions. Physical intensity. Everything is harder here. The heat, the terrain, the logistics. Build here and you can build anywhere on Earth.</p>
-                    <p class="location-quote">"If you can build here, you can build anywhere."</p>
-                    <div class="location-tags">
-                        <span class="location-tag">Extreme Build</span>
-                        <span class="location-tag">Remote Ops</span>
-                        <span class="location-tag">Physical Intensity</span>
-                        <span class="location-tag">Final Push</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Progress indicator -->
-            <div class="location-progress">
-                <div class="progress-segment active" data-panel="0"></div>
-                <div class="progress-segment" data-panel="1"></div>
-                <div class="progress-segment" data-panel="2"></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Section 4: Selection -->
-    <section class="selection" id="selection">
-        <p class="selection-tag">Selection</p>
-        <h2 class="selection-title">You do not get in by applying. You get in by surviving.</h2>
-        <p class="selection-intro">This is not a school application. This is a gauntlet. A series of challenges will determine who is serious, and who is just watching.</p>
-
-        <div class="selection-content">
-            <div class="funnel">
-                <div class="funnel-bar">
-                    <div class="funnel-fill">
-                        <span class="funnel-number">Hundreds of thousands</span>
-                    </div>
-                    <span class="funnel-label">Enter their name</span>
-                </div>
-                <div class="funnel-bar">
-                    <div class="funnel-fill">
-                        <span class="funnel-number">Thousands</span>
-                    </div>
-                    <span class="funnel-label">Survive the challenges</span>
-                </div>
-                <div class="funnel-bar">
-                    <div class="funnel-fill">
-                        <span class="funnel-number">400</span>
-                    </div>
-                    <span class="funnel-label">Qualify for the Beast Tournament</span>
-                </div>
-                <div class="funnel-bar">
-                    <div class="funnel-fill">
-                        <span class="funnel-number">40</span>
-                    </div>
-                    <span class="funnel-label">Are chosen</span>
-                </div>
-            </div>
-
-            <div class="mystery-box">
-                <div class="mystery-icon">?</div>
-                <h3 class="mystery-title">What are the challenges?</h3>
-                <p class="mystery-text">You will find out when they drop. All we will say is this: they will test everything, your brain, your grit, your creativity, and how badly you actually want this. Enter your name. The first challenge comes to you.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Section 5: Apply -->
-    <section class="apply" id="apply">
-        <p class="apply-label">You Will Not Be The Same</p>
-
-        <p class="apply-body">One year from now, you will be someone who has lived in three communities on three continents, built things with your hands that matter, earned the respect of people across the world, in their language, and done it all while the world watched.</p>
-
-        <div class="apply-punchline">
-            <span>That person is the reward.</span><br>
-            <span>Everything else is noise.</span>
-        </div>
-
-        <div class="form-card">
-            <h3 class="form-header">Enter Your Name.</h3>
-
-            <form id="application-form">
-                <div class="form-fields">
-                    <input type="text" class="form-input" id="name" placeholder="Full Name" required>
-                    <input type="email" class="form-input" id="email" placeholder="Email" required>
-                    <select class="form-select" id="age" required>
-                        <option value="" disabled selected>Age</option>
-                        <option value="14">14</option>
-                        <option value="15">15</option>
-                        <option value="16">16</option>
-                        <option value="17">17</option>
-                        <option value="18">18</option>
-                    </select>
-                </div>
-
-                <button type="submit" class="form-submit" id="submit-btn">I'm In</button>
-            </form>
-
-            <div class="live-counter">
-                <span class="counter-dot"></span>
-                <span class="counter-text"><span class="counter-number" id="live-counter">0</span> have already entered</span>
-            </div>
-
-            <p class="form-micro">Takes 10 seconds. The challenges start soon.</p>
-        </div>
-
-        <p class="apply-dare">Think you are not ready? You are probably right.</p>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <p class="footer-left">Beast Philanthropy × Alpha School, 2026</p>
-        <nav class="footer-links">
-            <a href="#" class="footer-link">For Parents</a>
-            <a href="#" class="footer-link">Program Details</a>
-            <a href="#" class="footer-link">Cost & Scholarships</a>
-            <a href="#" class="footer-link">Team & Safety</a>
-            <a href="#" class="footer-link">FAQ</a>
-        </nav>
-    </footer>
-
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script>
-        gsap.registerPlugin(ScrollTrigger);
-
-        // ========== NAV AUTO-HIDE & SCROLL INDICATOR ==========
-        let lastScroll = 0;
-        const nav = document.getElementById('nav');
-        const scrollIndicator = document.getElementById('scroll-indicator');
-
-        window.addEventListener('scroll', () => {
-            const currentScroll = window.pageYOffset;
-            
-            // Nav auto-hide
-            if (currentScroll > lastScroll && currentScroll > 100) {
-                nav.classList.add('hidden');
-            } else {
-                nav.classList.remove('hidden');
-            }
-            
-            // Scroll indicator fade
-            if (currentScroll > 50) {
-                scrollIndicator.classList.add('hidden');
-            } else {
-                scrollIndicator.classList.remove('hidden');
-            }
-            
-            lastScroll = currentScroll;
-        });
-
-        // ========== HERO ANIMATIONS ==========
-        // Headline clip-path reveal
-        gsap.from('.hero-headline .line', {
-            clipPath: 'inset(0 100% 0 0)',
-            duration: 1,
-            ease: 'power3.out',
-            stagger: 0.4,
-            immediateRender: false
-        });
-
-        // Stats appear
-        gsap.from('.hero-stats .stat', {
-            y: 30,
-            opacity: 0,
-            duration: 0.8,
-            ease: 'power3.out',
-            stagger: 0.15,
-            delay: 1.2,
-            immediateRender: false
-        });
-
-        // CTAs appear
-        gsap.from('.hero-ctas', {
-            y: 20,
-            opacity: 0,
-            duration: 0.8,
-            ease: 'power3.out',
-            delay: 1.8,
-            immediateRender: false
-        });
-
-        // ========== MANIFESTO ANIMATIONS ==========
-        gsap.from('.manifesto-quote', {
-            clipPath: 'inset(0 50% 0 50%)',
-            opacity: 0,
-            duration: 1.2,
-            ease: 'power3.out',
-            immediateRender: false,
-            scrollTrigger: {
-                trigger: '.manifesto-quote',
-                start: 'top 80%'
-            }
-        });
-
-        gsap.from('.manifesto-body p', {
-            y: 40,
-            opacity: 0,
-            duration: 0.8,
-            ease: 'power3.out',
-            stagger: 0.2,
-            immediateRender: false,
-            scrollTrigger: {
-                trigger: '.manifesto-body',
-                start: 'top 80%'
-            }
-        });
-
-        gsap.from('.manifesto-footer', {
-            y: 20,
-            opacity: 0,
-            duration: 0.6,
-            ease: 'power3.out',
-            immediateRender: false,
-            scrollTrigger: {
-                trigger: '.manifesto-footer',
-                start: 'top 90%'
-            }
-        });
-
-        // ========== HORIZONTAL SCROLL (LOCATIONS) ==========
-        const horizontalWrapper = document.querySelector('.horizontal-wrapper');
-        const horizontalTrack = document.querySelector('.horizontal-track');
-        const progressSegments = document.querySelectorAll('.progress-segment');
-
-        // Only apply horizontal scroll on desktop
-        if (window.innerWidth > 768) {
-            const scrollTween = gsap.to(horizontalTrack, {
-                xPercent: -66.66,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: horizontalWrapper,
-                    pin: true,
-                    scrub: 1,
-                    end: '+=3000',
-                    onUpdate: (self) => {
-                        const progress = self.progress;
-                        progressSegments.forEach((seg, i) => {
-                            if (progress >= i / 3 && progress < (i + 1) / 3) {
-                                seg.classList.add('active');
-                            } else if (progress >= 1 && i === 2) {
-                                seg.classList.add('active');
-                            } else {
-                                seg.classList.remove('active');
-                            }
-                        });
-                    }
-                }
-            });
-
-            // Location panel text animations
-            gsap.from('.location-panel.africa .location-name', {
-                y: 60,
-                opacity: 0,
-                duration: 0.8,
-                ease: 'power3.out',
-                immediateRender: false,
-                scrollTrigger: {
-                    trigger: '.location-panel.africa',
-                    start: 'left 80%',
-                    containerAnimation: scrollTween
-                }
-            });
-
-            gsap.from('.location-panel.india .location-name', {
-                y: 60,
-                opacity: 0,
-                duration: 0.8,
-                ease: 'power3.out',
-                immediateRender: false,
-                scrollTrigger: {
-                    trigger: '.location-panel.india',
-                    start: 'left 80%',
-                    containerAnimation: scrollTween
-                }
-            });
-
-            gsap.from('.location-panel.amazon .location-name', {
-                y: 60,
-                opacity: 0,
-                duration: 0.8,
-                ease: 'power3.out',
-                immediateRender: false,
-                scrollTrigger: {
-                    trigger: '.location-panel.amazon',
-                    start: 'left 80%',
-                    containerAnimation: scrollTween
-                }
-            });
-        } else {
-            // Mobile: stagger reveal for stacked cards
-            gsap.from('.location-panel', {
-                y: 50,
-                opacity: 0,
-                duration: 0.8,
-                ease: 'power3.out',
-                stagger: 0.3,
-                immediateRender: false,
-                scrollTrigger: {
-                    trigger: '.horizontal-track',
-                    start: 'top 80%'
-                }
-            });
+statNumbers.forEach((stat, index) => {
+  const target = parseInt(stat.dataset.target);
+  
+  ScrollTrigger.create({
+    trigger: stat,
+    start: 'top 80%',
+    once: true,
+    onEnter: () => {
+      gsap.to(stat, {
+        innerHTML: target,
+        duration: 2,
+        delay: index * 0.3,
+        snap: { innerHTML: 1 },
+        ease: 'power2.out',
+        onUpdate: function() {
+          const current = Math.round(parseFloat(stat.innerHTML));
+          if (target >= 1000000) {
+            stat.innerHTML = current.toLocaleString() + '+';
+          } else {
+            stat.innerHTML = current.toLocaleString();
+          }
         }
+      });
+    }
+  });
+});
 
-        // ========== FUNNEL ANIMATIONS ==========
-        gsap.from('.funnel-fill', {
-            width: 0,
-            duration: 1,
-            ease: 'power3.out',
-            stagger: 0.3,
-            immediateRender: false,
-            scrollTrigger: {
-                trigger: '.funnel',
-                start: 'top 80%'
-            }
-        });
+// ================================================================
+// MANIFESTO ANIMATIONS
+// ================================================================
+// Quote clip-path reveal (scrub, reverses naturally)
+gsap.fromTo('.manifesto-quote', 
+  { clipPath: 'inset(0 100% 0 0)' },
+  {
+    clipPath: 'inset(0 0% 0 0)',
+    ease: 'none',
+    scrollTrigger: {
+      trigger: '.manifesto-quote',
+      start: 'top 80%',
+      end: 'top 30%',
+      scrub: true
+    }
+  }
+);
 
-        gsap.from('.mystery-box', {
-            y: 40,
-            opacity: 0,
-            duration: 0.8,
-            ease: 'power3.out',
-            immediateRender: false,
-            scrollTrigger: {
-                trigger: '.mystery-box',
-                start: 'top 85%'
-            }
-        });
+// Body paragraphs stagger fade-up (reverses on scroll up)
+gsap.from('.manifesto-body p', {
+  opacity: 0,
+  y: 30,
+  stagger: 0.2,
+  duration: 0.8,
+  ease: 'power2.out',
+  scrollTrigger: {
+    trigger: '.manifesto-body',
+    start: 'top 70%',
+    toggleActions: 'play none none reverse'
+  }
+});
 
-        // ========== APPLY SECTION ANIMATIONS ==========
-        gsap.from('.apply-body', {
-            clipPath: 'inset(0 50% 0 50%)',
-            opacity: 0,
-            duration: 1,
-            ease: 'power3.out',
-            immediateRender: false,
-            scrollTrigger: {
-                trigger: '.apply-body',
-                start: 'top 80%'
-            }
-        });
+// Footer fade in
+gsap.from('.manifesto-footer', {
+  opacity: 0,
+  y: 20,
+  duration: 0.6,
+  scrollTrigger: {
+    trigger: '.manifesto-footer',
+    start: 'top 90%',
+    toggleActions: 'play none none reverse'
+  }
+});
 
-        gsap.from('.apply-punchline', {
-            y: 40,
-            opacity: 0,
-            duration: 0.8,
-            ease: 'power3.out',
-            immediateRender: false,
-            scrollTrigger: {
-                trigger: '.apply-punchline',
-                start: 'top 85%'
-            }
-        });
+// ================================================================
+// JOURNEY SECTION (Airplane Map) - DESKTOP ONLY
+// ================================================================
+if (!isMobile) {
+  const journeyContainer = document.querySelector('.journey-container');
+  const journeySticky = document.querySelector('.journey-sticky');
+  const airplane = document.querySelector('#airplane');
+  const flightPath = document.querySelector('#flightPath');
+  const cardAfrica = document.querySelector('#card-africa');
+  const cardIndia = document.querySelector('#card-india');
+  const cardAmazon = document.querySelector('#card-amazon');
+  
+  // Get flight path length for stroke animation
+  const pathLength = flightPath.getTotalLength();
+  
+  // Set initial stroke-dasharray and dashoffset
+  gsap.set(flightPath, {
+    strokeDasharray: pathLength,
+    strokeDashoffset: pathLength
+  });
+  
+  // Set airplane initial position
+  gsap.set(airplane, { opacity: 0 });
+  
+  // Create the journey timeline
+  const journeyTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: journeyContainer,
+      start: 'top top',
+      end: 'bottom bottom',
+      pin: journeySticky,
+      scrub: true
+    }
+  });
+  
+  // Timeline segments (matching the brief's percentages)
+  journeyTl
+    // 0-5%: Map fades in, airplane appears at Home
+    .to(airplane, { opacity: 1, duration: 0.05 }, 0)
+    
+    // 5-25%: Fly from Home to Africa
+    .to(airplane, {
+      motionPath: {
+        path: '#flightPath',
+        align: '#flightPath',
+        autoRotate: true,
+        alignOrigin: [0.5, 0.5],
+        start: 0,
+        end: 0.33
+      },
+      duration: 0.20
+    }, 0.05)
+    .to(flightPath, {
+      strokeDashoffset: pathLength * 0.67,
+      duration: 0.20,
+      ease: 'none'
+    }, 0.05)
+    
+    // 25-30%: Africa card fades in (airplane pauses)
+    .to(cardAfrica, { opacity: 1, scale: 1, duration: 0.05 }, 0.25)
+    
+    // 30-35%: Africa card fades out
+    .to(cardAfrica, { opacity: 0, scale: 0.9, duration: 0.05 }, 0.30)
+    
+    // 35-55%: Fly from Africa to India
+    .to(airplane, {
+      motionPath: {
+        path: '#flightPath',
+        align: '#flightPath',
+        autoRotate: true,
+        alignOrigin: [0.5, 0.5],
+        start: 0.33,
+        end: 0.66
+      },
+      duration: 0.20
+    }, 0.35)
+    .to(flightPath, {
+      strokeDashoffset: pathLength * 0.34,
+      duration: 0.20,
+      ease: 'none'
+    }, 0.35)
+    
+    // 55-60%: India card fades in
+    .to(cardIndia, { opacity: 1, scale: 1, duration: 0.05 }, 0.55)
+    
+    // 60-65%: India card fades out
+    .to(cardIndia, { opacity: 0, scale: 0.9, duration: 0.05 }, 0.60)
+    
+    // 65-85%: Fly from India to Amazon
+    .to(airplane, {
+      motionPath: {
+        path: '#flightPath',
+        align: '#flightPath',
+        autoRotate: true,
+        alignOrigin: [0.5, 0.5],
+        start: 0.66,
+        end: 1
+      },
+      duration: 0.20
+    }, 0.65)
+    .to(flightPath, {
+      strokeDashoffset: 0,
+      duration: 0.20,
+      ease: 'none'
+    }, 0.65)
+    
+    // 85-90%: Amazon card fades in
+    .to(cardAmazon, { opacity: 1, scale: 1, duration: 0.05 }, 0.85)
+    
+    // 90-95%: Amazon card fades out
+    .to(cardAmazon, { opacity: 0, scale: 0.9, duration: 0.05 }, 0.90)
+    
+    // 95-100%: Map fades out
+    .to('.journey-map-wrapper', { opacity: 0, duration: 0.05 }, 0.95);
+}
 
-        gsap.from('.form-card', {
-            y: 50,
-            opacity: 0,
-            duration: 0.8,
-            ease: 'power3.out',
-            immediateRender: false,
-            scrollTrigger: {
-                trigger: '.form-card',
-                start: 'top 85%'
-            }
-        });
+// ================================================================
+// GAUNTLET SECTION (3D Tunnel) - DESKTOP ONLY
+// ================================================================
+if (!isMobile) {
+  const gauntletContainer = document.querySelector('.gauntlet-container');
+  const gauntletSticky = document.querySelector('.gauntlet-sticky');
+  const tunnelLight = document.querySelector('.tunnel-light');
+  const gate1 = document.querySelector('.tunnel-gate-1');
+  const gate2 = document.querySelector('.tunnel-gate-2');
+  const gate3 = document.querySelector('.tunnel-gate-3');
+  const gate4 = document.querySelector('.tunnel-gate-4');
+  const tunnelWalls = document.querySelectorAll('.tunnel-wall');
+  
+  // Set initial states
+  gsap.set([gate1, gate2, gate3, gate4], { 
+    transformStyle: 'preserve-3d',
+    z: -2000,
+    opacity: 1
+  });
+  gsap.set(tunnelLight, { scale: 0.5, opacity: 0.3 });
+  gsap.set(tunnelWalls, { opacity: 0 });
+  
+  // Create the gauntlet timeline
+  const gauntletTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: gauntletContainer,
+      start: 'top top',
+      end: 'bottom bottom',
+      pin: gauntletSticky,
+      scrub: true
+    }
+  });
+  
+  // Timeline segments
+  gauntletTl
+    // 0-15%: Tunnel walls fade in, see the distant light and first gate
+    .to(tunnelWalls, { opacity: 0.15, duration: 0.15 }, 0)
+    .to(tunnelLight, { scale: 0.8, opacity: 0.5, duration: 0.15 }, 0)
+    
+    // 15-30%: Gate 1 rushes toward you and past you
+    .to(gate1, { 
+      z: 500, 
+      scale: 3,
+      opacity: 0,
+      duration: 0.15,
+      ease: 'power1.in'
+    }, 0.15)
+    .to(tunnelLight, { scale: 1.2, opacity: 0.6, duration: 0.15 }, 0.15)
+    
+    // 30-50%: Gate 2 approaches and passes
+    .to(gate2, { 
+      z: 500, 
+      scale: 2.5,
+      opacity: 0,
+      duration: 0.20,
+      ease: 'power1.in'
+    }, 0.30)
+    .to(tunnelLight, { scale: 1.8, opacity: 0.7, duration: 0.20 }, 0.30)
+    
+    // 50-70%: Gate 3 approaches and passes
+    .to(gate3, { 
+      z: 500, 
+      scale: 2,
+      opacity: 0,
+      duration: 0.20,
+      ease: 'power1.in'
+    }, 0.50)
+    .to(tunnelLight, { scale: 2.5, opacity: 0.8, duration: 0.20 }, 0.50)
+    
+    // 70-90%: Gate 4 approaches but STOPS, centers, and glows
+    .to(gate4, { 
+      z: 0, 
+      scale: 1,
+      duration: 0.20,
+      ease: 'power2.out'
+    }, 0.70)
+    .to(tunnelLight, { 
+      scale: 5, 
+      opacity: 1, 
+      filter: 'blur(60px)',
+      duration: 0.20 
+    }, 0.70)
+    .to('.tunnel-gate-4 .gate-number', {
+      textShadow: '0 0 80px rgba(var(--accent-rgb), 0.8)',
+      duration: 0.10
+    }, 0.80)
+    
+    // 90-100%: Hold on "40" for dramatic effect
+    .to({}, { duration: 0.10 }, 0.90);
+}
 
-        // ========== LIVE COUNTER ==========
-        const counterEl = document.getElementById('live-counter');
-        let counterAnimated = false;
-        let currentCount = 47283;
+// ================================================================
+// APPLY SECTION - FORM AND ANIMATIONS
+// ================================================================
 
-        ScrollTrigger.create({
-            trigger: '.live-counter',
-            start: 'top 90%',
-            onEnter: () => {
-                if (!counterAnimated) {
-                    counterAnimated = true;
-                    gsap.to({ val: 0 }, {
-                        val: 47283,
-                        duration: 2,
-                        ease: 'power2.out',
-                        onUpdate: function() {
-                            counterEl.textContent = Math.floor(this.targets()[0].val).toLocaleString();
-                        },
-                        onComplete: () => {
-                            // Start random increments
-                            setInterval(() => {
-                                currentCount += 1;
-                                counterEl.textContent = currentCount.toLocaleString();
-                            }, Math.random() * 5000 + 3000);
-                        }
-                    });
-                }
-            }
-        });
+// Form elements
+const formName = document.getElementById('form-name');
+const formEmail = document.getElementById('form-email');
+const formAge = document.getElementById('form-age');
+const formSubmit = document.getElementById('form-submit');
+const submitWipe = document.getElementById('submit-wipe');
+const submitAirplane = document.getElementById('submit-airplane');
+const liveCounter = document.getElementById('live-counter');
 
-        // ========== FORM VALIDATION ==========
-        const form = document.getElementById('application-form');
-        const submitBtn = document.getElementById('submit-btn');
-        const nameInput = document.getElementById('name');
-        const emailInput = document.getElementById('email');
-        const ageSelect = document.getElementById('age');
+// Guard against double-click
+let submitted = false;
 
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
+// Guard against multiple intervals
+let counterStarted = false;
 
-            let hasError = false;
+// Form submit handler
+formSubmit.addEventListener('click', () => {
+  // Guard against double-click
+  if (submitted) return;
+  
+  // Validate fields
+  let valid = true;
+  
+  // Clear previous errors
+  [formName, formEmail, formAge].forEach(field => {
+    field.classList.remove('error');
+  });
+  
+  if (!formName.value.trim()) {
+    formName.classList.add('error');
+    valid = false;
+    setTimeout(() => formName.classList.remove('error'), 2000);
+  }
+  
+  if (!formEmail.value.trim() || !formEmail.value.includes('@')) {
+    formEmail.classList.add('error');
+    valid = false;
+    setTimeout(() => formEmail.classList.remove('error'), 2000);
+  }
+  
+  if (!formAge.value) {
+    formAge.classList.add('error');
+    valid = false;
+    setTimeout(() => formAge.classList.remove('error'), 2000);
+  }
+  
+  if (!valid) return;
+  
+  // Set submitted flag
+  submitted = true;
+  
+  // Airplane wipe animation (click-triggered, NOT scroll-driven)
+  const submitTl = gsap.timeline();
+  
+  submitTl
+    // Airplane flies across
+    .to(submitAirplane, {
+      x: window.innerWidth + 200,
+      duration: 1.5,
+      ease: 'power2.inOut'
+    })
+    // Wipe follows airplane
+    .to(submitWipe, {
+      clipPath: 'inset(0 0% 0 0)',
+      duration: 1.5,
+      ease: 'power2.inOut'
+    }, 0)
+    // After animation completes
+    .call(() => {
+      // Change button state
+      formSubmit.textContent = "✓ YOU'RE IN";
+      formSubmit.classList.add('success');
+      formSubmit.disabled = true;
+      
+      // Fade out wipe
+      gsap.to(submitWipe, {
+        opacity: 0,
+        duration: 0.5,
+        delay: 0.5
+      });
+    });
+});
 
-            [nameInput, emailInput, ageSelect].forEach(field => {
-                field.classList.remove('error');
-                if (!field.value) {
-                    hasError = true;
-                    field.classList.add('error');
-                    setTimeout(() => {
-                        field.classList.remove('error');
-                    }, 2000);
-                }
-            });
+// Live counter animation (once: true, never reverse)
+let currentCount = 47283;
 
-            if (!hasError) {
-                submitBtn.textContent = "YOU'RE IN ✓";
-                submitBtn.classList.add('success');
-                submitBtn.disabled = true;
-                
-                // Increment counter
-                currentCount += 1;
-                counterEl.textContent = currentCount.toLocaleString();
-            }
-        });
+ScrollTrigger.create({
+  trigger: '.live-counter',
+  start: 'top 80%',
+  once: true,
+  onEnter: () => {
+    gsap.to({ val: 0 }, {
+      val: currentCount,
+      duration: 2,
+      ease: 'power2.out',
+      snap: { val: 1 },
+      onUpdate: function() {
+        liveCounter.textContent = Math.round(this.targets()[0].val).toLocaleString();
+      },
+      onComplete: () => {
+        // Start auto-increment only after count-up finishes
+        if (!counterStarted) {
+          counterStarted = true;
+          setInterval(() => {
+            currentCount += 1;
+            liveCounter.textContent = currentCount.toLocaleString();
+          }, Math.random() * 5000 + 3000); // 3-8 seconds
+        }
+      }
+    });
+  }
+});
 
-        // ========== SMOOTH SCROLL FOR ANCHOR LINKS ==========
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-    </script>
+// ================================================================
+// SORT AND REFRESH ALL SCROLLTRIGGERS
+// ================================================================
+ScrollTrigger.sort();
+ScrollTrigger.refresh();
+</script>
+
 </body>
 </html>
