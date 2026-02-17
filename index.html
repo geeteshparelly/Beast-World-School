@@ -6,7 +6,7 @@
     <title>Beast World School | Beast Philanthropy × Alpha School</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after {
             margin: 0;
@@ -39,10 +39,21 @@
 
         body {
             font-family: var(--font-body);
+            font-weight: 300;
             background: var(--bg-dominant);
             color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
+        }
+
+        /* Global accent text glow */
+        .accent, .hero-headline .accent, .apply-punchline {
+            text-shadow: 0 0 30px rgba(255, 45, 122, 0.3);
+        }
+
+        /* Global smooth transitions */
+        a, button, input, select {
+            transition: all 0.3s ease;
         }
 
         /* Grain overlay */
@@ -83,11 +94,11 @@
             left: 0;
             right: 0;
             z-index: 1000;
-            padding: 1rem 2rem;
+            padding: 0.75rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(5, 5, 5, 0.8);
+            background: rgba(5, 5, 5, 0.85);
             backdrop-filter: blur(20px);
             transition: transform 0.3s ease;
         }
@@ -98,21 +109,22 @@
 
         .nav-logo {
             font-family: var(--font-display);
-            font-size: clamp(1.5rem, 3vw, 2rem);
-            letter-spacing: 0.05em;
+            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+            letter-spacing: 0.08em;
             color: var(--text-primary);
             text-decoration: none;
         }
 
         .nav-logo span {
             color: var(--accent);
+            text-shadow: 0 0 20px rgba(255, 45, 122, 0.3);
         }
 
         .nav-apply {
             font-family: var(--font-display);
-            font-size: 1rem;
+            font-size: 0.85rem;
             letter-spacing: 0.1em;
-            padding: 0.75rem 1.5rem;
+            padding: 0.5rem 1.25rem;
             background: var(--accent);
             color: #000;
             border: none;
@@ -122,7 +134,7 @@
         }
 
         .nav-apply:hover {
-            transform: translateY(-2px);
+            transform: translateY(-2px) scale(1.02);
             box-shadow: 0 8px 30px rgba(255, 45, 122, 0.4);
         }
 
@@ -231,31 +243,32 @@
         .partnership-badge {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: rgba(255, 255, 255, 0.05);
+            gap: 0.4rem;
+            padding: 0.35rem 0.75rem;
+            background: rgba(255, 255, 255, 0.03);
             border-radius: 100px;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             font-family: var(--font-mono);
-            font-size: 0.65rem;
+            font-size: 0.55rem;
             text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: var(--text-secondary);
+            letter-spacing: 0.2em;
+            color: var(--text-muted);
         }
 
         .partnership-badge::before {
             content: '';
-            width: 6px;
-            height: 6px;
+            width: 5px;
+            height: 5px;
             background: var(--accent);
             border-radius: 50%;
+            opacity: 0.7;
         }
 
         .hero-headline {
             font-family: var(--font-display);
             font-size: clamp(2.5rem, 7vw, 6rem);
             line-height: 0.95;
-            letter-spacing: -0.02em;
+            letter-spacing: 0.02em;
             margin-bottom: 1.5rem;
         }
 
@@ -294,6 +307,8 @@
             font-size: clamp(2rem, 4vw, 3rem);
             color: var(--accent);
             line-height: 1;
+            letter-spacing: 0.02em;
+            text-shadow: 0 0 30px rgba(255, 45, 122, 0.3);
         }
 
         .stat-number.massive {
@@ -302,11 +317,11 @@
 
         .stat-label {
             font-family: var(--font-mono);
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             text-transform: uppercase;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.18em;
             color: var(--text-muted);
-            margin-top: 0.25rem;
+            margin-top: 0.5rem;
         }
 
         .hero-ctas {
@@ -329,7 +344,7 @@
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
+            transform: translateY(-2px) scale(1.02);
             box-shadow: 0 8px 30px rgba(255, 45, 122, 0.4);
         }
 
@@ -349,6 +364,51 @@
         .btn-secondary:hover {
             border-color: var(--accent);
             color: var(--accent);
+            transform: translateY(-2px) scale(1.02);
+            text-shadow: 0 0 20px rgba(255, 45, 122, 0.3);
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0.6;
+            transition: opacity 0.5s ease;
+            z-index: 10;
+        }
+
+        .scroll-indicator.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .scroll-indicator-text {
+            font-family: var(--font-mono);
+            font-size: 0.55rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--text-muted);
+        }
+
+        .scroll-indicator-arrow {
+            width: 20px;
+            height: 20px;
+            border-right: 1.5px solid var(--text-muted);
+            border-bottom: 1.5px solid var(--text-muted);
+            transform: rotate(45deg);
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: rotate(45deg) translateY(0); }
+            40% { transform: rotate(45deg) translateY(6px); }
+            60% { transform: rotate(45deg) translateY(3px); }
         }
 
         /* Floating topographic SVG in hero */
@@ -359,10 +419,35 @@
             height: 400px;
         }
 
+        /* Section transition gradient */
+        .section-fade-top::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 150px;
+            background: linear-gradient(to bottom, var(--bg-dominant), transparent);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .section-fade-bottom::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 150px;
+            background: linear-gradient(to top, var(--bg-surface-1), transparent);
+            pointer-events: none;
+            z-index: 1;
+        }
+
         /* ========== SECTION 2: MANIFESTO ========== */
         .manifesto {
             min-height: 100vh;
-            padding: clamp(4rem, 10vh, 8rem) clamp(1.5rem, 5vw, 4rem);
+            padding: clamp(10rem, 18vh, 14rem) clamp(1.5rem, 5vw, 4rem) clamp(8rem, 14vh, 12rem);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -378,8 +463,9 @@
             font-family: var(--font-display);
             font-size: clamp(2rem, 5vw, 4rem);
             line-height: 1.15;
+            letter-spacing: 0.02em;
             max-width: 1100px;
-            margin-bottom: 4rem;
+            margin-bottom: 5rem;
             position: relative;
             padding-left: 2rem;
             border-left: 4px solid var(--accent);
@@ -428,13 +514,13 @@
         /* ========== SECTION 3: LOCATIONS (Horizontal Scroll) ========== */
         .locations {
             background: var(--bg-dominant);
-            padding-top: clamp(4rem, 8vh, 6rem);
+            padding-top: clamp(8rem, 12vh, 10rem);
             position: relative;
         }
 
         .locations-header {
             padding: 0 clamp(1.5rem, 5vw, 4rem);
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
         }
 
         .locations-tag {
@@ -449,7 +535,8 @@
         .locations-title {
             font-family: var(--font-display);
             font-size: clamp(2.5rem, 6vw, 4.5rem);
-            margin-bottom: 1rem;
+            letter-spacing: 0.02em;
+            margin-bottom: 1.5rem;
         }
 
         .locations-intro {
@@ -505,7 +592,8 @@
             font-family: var(--font-display);
             font-size: clamp(5rem, 15vw, 12rem);
             line-height: 0.9;
-            margin-bottom: 0.5rem;
+            letter-spacing: 0.02em;
+            margin-bottom: 1rem;
         }
 
         .location-subtitle {
@@ -529,11 +617,15 @@
             font-family: var(--font-body);
             font-size: clamp(1.25rem, 2vw, 1.5rem);
             font-style: italic;
+            font-weight: 300;
             color: var(--text-primary);
             max-width: 450px;
-            margin-bottom: 2rem;
+            margin-top: 2rem;
+            margin-bottom: 2.5rem;
             position: relative;
             padding-left: 1.5rem;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
         }
 
         .africa .location-quote {
@@ -628,7 +720,7 @@
 
         /* ========== SECTION 4: HOW YOU GET IN ========== */
         .selection {
-            padding: clamp(6rem, 12vh, 10rem) clamp(1.5rem, 5vw, 4rem);
+            padding: clamp(8rem, 15vh, 12rem) clamp(1.5rem, 5vw, 4rem);
             background: var(--bg-surface-1);
             background-image: 
                 radial-gradient(at 50% 0%, rgba(255, 45, 122, 0.06) 0%, transparent 50%);
@@ -647,6 +739,7 @@
         .selection-title {
             font-family: var(--font-display);
             font-size: clamp(2rem, 5vw, 4rem);
+            letter-spacing: 0.02em;
             margin-bottom: 1.5rem;
             max-width: 800px;
         }
@@ -763,6 +856,7 @@
         .mystery-title {
             font-family: var(--font-display);
             font-size: clamp(1.5rem, 3vw, 2rem);
+            letter-spacing: 0.02em;
             margin-bottom: 1rem;
         }
 
@@ -774,7 +868,7 @@
 
         /* ========== SECTION 5: APPLY ========== */
         .apply {
-            padding: clamp(8rem, 15vh, 12rem) clamp(1.5rem, 5vw, 4rem) clamp(4rem, 8vh, 6rem);
+            padding: clamp(10rem, 18vh, 14rem) clamp(1.5rem, 5vw, 4rem) clamp(6rem, 10vh, 8rem);
             background: var(--bg-dominant);
             background-image: 
                 radial-gradient(at 50% 30%, rgba(255, 45, 122, 0.08) 0%, transparent 40%);
@@ -802,9 +896,10 @@
         .apply-punchline {
             font-family: var(--font-display);
             font-size: clamp(2.5rem, 6vw, 5rem);
+            letter-spacing: 0.02em;
             color: var(--accent);
             font-style: italic;
-            margin-bottom: 4rem;
+            margin-bottom: 5rem;
             position: relative;
         }
 
@@ -857,6 +952,7 @@
         .form-header {
             font-family: var(--font-display);
             font-size: clamp(1.75rem, 4vw, 2.5rem);
+            letter-spacing: 0.02em;
             margin-bottom: 2rem;
         }
 
@@ -947,7 +1043,7 @@
         }
 
         .form-submit:hover {
-            transform: translateY(-2px);
+            transform: translateY(-2px) scale(1.02);
             box-shadow: 0 8px 30px rgba(255, 45, 122, 0.4);
         }
 
@@ -1081,7 +1177,7 @@
     </nav>
 
     <!-- Section 1: Hero -->
-    <section class="hero" id="hero">
+    <section class="hero section-fade-bottom" id="hero">
         <!-- Floating SVG decoration -->
         <svg class="floating-svg float-1" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="200" cy="200" r="180" stroke="currentColor" stroke-width="0.5"/>
@@ -1140,6 +1236,12 @@
                 <a href="#apply" class="btn-primary">Apply Now</a>
                 <a href="#manifesto" class="btn-secondary">Learn More</a>
             </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="scroll-indicator" id="scroll-indicator">
+            <span class="scroll-indicator-text">Scroll</span>
+            <div class="scroll-indicator-arrow"></div>
         </div>
     </section>
 
@@ -1333,17 +1435,28 @@
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
-        // ========== NAV AUTO-HIDE ==========
+        // ========== NAV AUTO-HIDE & SCROLL INDICATOR ==========
         let lastScroll = 0;
         const nav = document.getElementById('nav');
+        const scrollIndicator = document.getElementById('scroll-indicator');
 
         window.addEventListener('scroll', () => {
             const currentScroll = window.pageYOffset;
+            
+            // Nav auto-hide
             if (currentScroll > lastScroll && currentScroll > 100) {
                 nav.classList.add('hidden');
             } else {
                 nav.classList.remove('hidden');
             }
+            
+            // Scroll indicator fade
+            if (currentScroll > 50) {
+                scrollIndicator.classList.add('hidden');
+            } else {
+                scrollIndicator.classList.remove('hidden');
+            }
+            
             lastScroll = currentScroll;
         });
 
