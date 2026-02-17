@@ -70,8 +70,7 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-.light-mode .nav-logo span,
-.light-mode .nav-apply {
+.light-mode .nav-logo span {
   color: #111111;
 }
 
@@ -108,8 +107,24 @@
   background-repeat: no-repeat;
 }
 
-/* Journey/Map section: PINK texture */
+/* Hide manifesto SVG lines and footer border in light mode */
+.light-mode .manifesto-bg {
+  display: none;
+}
+
+.light-mode .manifesto-footer {
+  border-top: none;
+}
+
+/* Journey/Map section: PINK texture on PINNED element */
+/* Outer section gets solid pink fallback, no texture */
 .light-mode .journey {
+  background-color: #f8c8d8;
+  background-image: none;
+}
+
+/* PINNED element gets the pink texture - this stays fixed during scroll */
+.light-mode .journey-sticky {
   background-color: #f8c8d8;
   background-image: url('https://geeteshparelly.github.io/Beast-World-School/assets/texture-pink.jpg');
   background-size: cover;
@@ -220,7 +235,6 @@
 .light-mode .hero-headline,
 .light-mode .manifesto-quote,
 .light-mode .journey-title,
-.light-mode .gauntlet-title,
 .light-mode .apply-headline,
 .light-mode .form-header {
   color: #111111;
@@ -228,7 +242,6 @@
 
 .light-mode .hero-subhead,
 .light-mode .manifesto-body p,
-.light-mode .gauntlet-body,
 .light-mode .apply-body {
   color: #222222;
 }
@@ -237,6 +250,79 @@
 .light-mode .journey-tag,
 .light-mode .manifesto-footer-text {
   color: #555555;
+}
+
+/* Hide dark mode texture overlays in light mode */
+.light-mode .manifesto::after,
+.light-mode .journey-sticky::after,
+.light-mode .apply::after {
+  display: none;
+}
+
+/* ================================================================
+   DARK MODE - Subtle Texture Overlays
+   ================================================================ */
+
+/* Manifesto: subtle cyan texture overlay */
+.manifesto::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('https://geeteshparelly.github.io/Beast-World-School/assets/texture-cyan.webp');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.06;
+  pointer-events: none;
+  z-index: 0;
+  mix-blend-mode: screen;
+}
+
+.manifesto-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* Journey/Map: subtle pink texture overlay on pinned element */
+.journey-sticky {
+  position: relative;
+}
+
+.journey-sticky::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('https://geeteshparelly.github.io/Beast-World-School/assets/texture-pink.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 0;
+  mix-blend-mode: screen;
+}
+
+.journey-header,
+.journey-map-wrapper {
+  position: relative;
+  z-index: 2;
+}
+
+/* Apply/Form: subtle gray texture overlay */
+.apply::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('https://geeteshparelly.github.io/Beast-World-School/assets/texture-gray.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 0;
+  mix-blend-mode: screen;
+}
+
+.apply > * {
+  position: relative;
+  z-index: 2;
 }
 
 /* ================================================================
@@ -1177,6 +1263,8 @@ body::after {
   background: var(--surface-1);
   text-align: center;
   transition: background-color 0.4s ease, background-image 0.4s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .apply-tag {
