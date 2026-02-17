@@ -2463,19 +2463,18 @@ if (!isMobile) {
       trigger: '#gauntlet',
       pin: true,
       start: 'top top',
-      end: '+=900vh',
+      end: '+=500vh',
       scrub: 2,
       snap: {
-        snapTo: [0, 0.2, 0.4, 0.6, 0.8, 1.0],
-        duration: { min: 0.5, max: 1.2 },
-        delay: 0.15,
+        snapTo: [0, 0.20, 0.40, 0.60, 0.80, 1],
+        duration: { min: 0.3, max: 0.8 },
         ease: 'power1.inOut'
       },
       onUpdate: function(self) {
         const p = self.progress;
         
         // Trigger counter animation when gate1 becomes visible
-        if (p > 0.21 && p < 0.38 && !gate1Counted) {
+        if (p > 0.21 && p < 0.35 && !gate1Counted) {
           gate1Counted = true;
           let n = 0;
           const el = document.querySelector('#gate1-number');
@@ -2498,41 +2497,29 @@ if (!isMobile) {
     }
   });
   
-  // Each element gets 20% of timeline (0.20)
-  // Within each 20%: 5% approach, 10% HOLD (nothing), 5% fly past
+  // --- ELEMENT 0: Header text ---
+  // Visible on arrival (already opacity: 1 in CSS)
+  // 0% to 15%: just sitting there, user reads it
+  // 15% to 20%: scales up to 3x and fades out
+  tunnelTl.to('#gate-header', { scale: 3, opacity: 0, duration: 0.05, ease: 'power2.in' }, 0.15);
   
-  // --- ELEMENT 0: Header text (0.00 - 0.20) ---
-  // Starts visible at scale 1
-  // 0.00 - 0.15: HOLD - nothing happens, user reads it
-  // 0.15 - 0.20: scale up to 15x and fade
-  tunnelTl.to('#gate-header', { scale: 15, opacity: 0, duration: 0.05, ease: 'power2.in' }, 0.15);
+  // --- ELEMENT 1: 100,000+ ---
+  // 20% to 35%: fade in at normal scale
+  tunnelTl.fromTo('#gate1', { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.03 }, 0.20);
+  // 35% to 40%: scale up and fade out (pass through)
+  tunnelTl.to('#gate1', { scale: 3, opacity: 0, duration: 0.05, ease: 'power2.in' }, 0.35);
   
-  // --- ELEMENT 1: 100,000+ (0.20 - 0.40) ---
-  // 0.20 - 0.25: approach (scale 0.1 → 1)
-  tunnelTl.fromTo('#gate1', { opacity: 1, scale: 0.1 }, { scale: 1, duration: 0.05 }, 0.20);
-  // 0.25 - 0.35: HOLD - nothing happens, gate sits at scale 1
-  // 0.35 - 0.40: fly past (scale 1 → 15)
-  tunnelTl.to('#gate1', { scale: 15, opacity: 0, duration: 0.05, ease: 'power2.in' }, 0.35);
+  // --- ELEMENT 2: Thousands ---
+  tunnelTl.fromTo('#gate2', { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.03 }, 0.40);
+  tunnelTl.to('#gate2', { scale: 3, opacity: 0, duration: 0.05, ease: 'power2.in' }, 0.55);
   
-  // --- ELEMENT 2: Thousands (0.40 - 0.60) ---
-  // 0.40 - 0.45: approach
-  tunnelTl.fromTo('#gate2', { opacity: 1, scale: 0.1 }, { scale: 1, duration: 0.05 }, 0.40);
-  // 0.45 - 0.55: HOLD
-  // 0.55 - 0.60: fly past
-  tunnelTl.to('#gate2', { scale: 15, opacity: 0, duration: 0.05, ease: 'power2.in' }, 0.55);
+  // --- ELEMENT 3: 1,000 ---
+  tunnelTl.fromTo('#gate3', { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.03 }, 0.60);
+  tunnelTl.to('#gate3', { scale: 3, opacity: 0, duration: 0.05, ease: 'power2.in' }, 0.75);
   
-  // --- ELEMENT 3: 1,000 (0.60 - 0.80) ---
-  // 0.60 - 0.65: approach
-  tunnelTl.fromTo('#gate3', { opacity: 1, scale: 0.1 }, { scale: 1, duration: 0.05 }, 0.60);
-  // 0.65 - 0.75: HOLD
-  // 0.75 - 0.80: fly past
-  tunnelTl.to('#gate3', { scale: 15, opacity: 0, duration: 0.05, ease: 'power2.in' }, 0.75);
-  
-  // --- ELEMENT 4: 40 (0.80 - 1.00) - FINAL, STAYS VISIBLE ---
-  // 0.80 - 0.85: approach
-  tunnelTl.fromTo('#gate4', { opacity: 1, scale: 0.1 }, { scale: 1, duration: 0.05 }, 0.80);
-  // 0.85 - 1.00: EXTRA LONG HOLD - gate sits at scale 1 for 15% of timeline
-  // It NEVER flies past. User scrolls through 2+ viewports of "40" sitting there.
+  // --- ELEMENT 4: 40 (FINAL - stays visible) ---
+  tunnelTl.fromTo('#gate4', { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.05 }, 0.80);
+  // Gate 4 does NOT scale up or fade - it stays
 }
 
 // ================================================================
