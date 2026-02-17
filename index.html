@@ -954,7 +954,7 @@ body {
 }
 
 /* ================================================================
-   GAUNTLET SECTION (3D Tunnel)
+   GAUNTLET SECTION (3D Tunnel - Scale Transform Version)
    ================================================================ */
 .gauntlet {
   position: relative;
@@ -962,105 +962,123 @@ body {
   z-index: 2;
 }
 
-.gauntlet-container {
-  height: 500vh;
-}
-
-/* Header OUTSIDE pinned area - scrolls away naturally */
-.gauntlet-header {
-  text-align: center;
-  padding: 100px 2rem 60px;
+/* Tunnel container - full viewport, pinned */
+.tunnel-container {
   position: relative;
-  z-index: 10;
-}
-
-.gauntlet-tag {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.65rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 0.5rem;
-}
-
-.gauntlet-title {
-  font-family: 'Bebas Neue', cursive;
-  font-size: clamp(1.8rem, 4vw, 2.5rem);
-  letter-spacing: 0.03em;
-  margin-bottom: 1rem;
-}
-
-.gauntlet-body {
-  font-size: clamp(0.9rem, 1.5vw, 1rem);
-  color: var(--text-secondary);
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-/* Spacer so header scrolls away before tunnel pins */
-.gauntlet-spacer {
-  height: 30vh;
-}
-
-.gauntlet-sticky {
-  position: relative;
+  width: 100vw;
   height: 100vh;
-  width: 100%;
-  perspective: 1200px;
-  perspective-origin: 50% 50%;
   overflow: hidden;
-  background: var(--bg);
+  background: #050505;
 }
 
-.gauntlet-tunnel {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.light-mode .tunnel-container {
+  background: #ffffff;
 }
 
-/* Gates - NO BORDERS, just floating numbers */
+/* All gates start scaled down and faded */
 .tunnel-gate {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) translateZ(-3000px);
-  transform-style: preserve-3d;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  border: none;
+  transform: translate(-50%, -50%) scale(0.3);
   opacity: 0;
+  text-align: center;
+  width: 90vw;
+  pointer-events: none;
+  z-index: 10;
 }
 
-/* Gate numbers - HUGE and centered */
+/* Gate intro (first gate with headline + body) */
+.gate-intro .gate-tag {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.gate-intro h2 {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(2rem, 5vw, 4rem);
+  color: var(--text-primary);
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.03em;
+}
+
+.light-mode .gate-intro h2 {
+  color: #111111;
+}
+
+.gate-intro p {
+  font-size: clamp(0.875rem, 1.5vw, 1.125rem);
+  color: var(--text-secondary);
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.light-mode .gate-intro p {
+  color: #333333;
+}
+
+/* Gate numbers - big pink accent */
 .gate-number {
   font-family: 'Bebas Neue', cursive;
-  font-size: clamp(8rem, 20vw, 16rem);
-  letter-spacing: 0.03em;
+  font-size: clamp(6rem, 18vw, 14rem);
   color: var(--accent);
-  text-shadow: 0 0 60px rgba(var(--accent-rgb), 0.6);
   line-height: 1;
+  display: block;
+  text-shadow: 0 0 60px rgba(var(--accent-rgb), 0.5);
 }
 
-.gate-subtext {
+/* Gate labels below numbers */
+.gate-label {
+  display: block;
   font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(0.8rem, 2vw, 1.2rem);
+  font-size: clamp(0.875rem, 2vw, 1.25rem);
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--text-muted);
   margin-top: 1rem;
 }
 
-/* Final gate "40" gets extra glow */
-.tunnel-gate-4 .gate-number {
-  text-shadow: 0 0 80px rgba(var(--accent-rgb), 0.8), 0 0 120px rgba(var(--accent-rgb), 0.5);
+/* Gate 5 (40) - BIGGEST with star glow */
+.gate-final .gate-number {
+  font-size: clamp(10rem, 25vw, 20rem);
+  font-weight: 900;
+}
+
+.gate-final .gate-label {
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.light-mode .gate-final .gate-label {
+  color: #111111;
+}
+
+/* Star glow behind the final "40" */
+.star-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(255, 31, 113, 0.35) 0%, rgba(255, 31, 113, 0.1) 40%, transparent 70%);
+  border-radius: 50%;
+  animation: starPulse 2s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes starPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+  50% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
 }
 
 /* Mystery Box */
@@ -1198,7 +1216,7 @@ body {
 }
 
 @media (max-width: 768px) {
-  .gauntlet-container {
+  .tunnel-container {
     display: none;
   }
   
@@ -1914,65 +1932,63 @@ body {
   </div>
 </section>
 
-<!-- Gauntlet Section (3D Tunnel) -->
+<!-- Gauntlet Section (3D Tunnel - 5 Gates) -->
 <section class="gauntlet" id="gauntlet">
-  <!-- Header OUTSIDE the pinned container - scrolls away naturally -->
-  <div class="gauntlet-header">
-    <p class="gauntlet-tag">Selection</p>
-    <h2 class="gauntlet-title">You don't get in by writing an essay. You get in by proving it.</h2>
-    <p class="gauntlet-body">This is the hardest application process in the world. You will DO, not just write. Beast Games-level challenges. Academic proof. Community contribution. Every phase narrows the field.</p>
-  </div>
-  
-  <!-- Spacer so header scrolls away before tunnel pins -->
-  <div class="gauntlet-spacer"></div>
-  
-  <div class="gauntlet-container">
-    <div class="gauntlet-sticky">
-      <div class="gauntlet-tunnel">
-        <!-- Gates - just floating numbers, no borders, no walls -->
-        <div class="tunnel-gate tunnel-gate-1" id="gate1">
-          <span class="gate-number">Hundreds of thousands</span>
-          <span class="gate-subtext">apply (grades 9-12)</span>
-        </div>
-        
-        <div class="tunnel-gate tunnel-gate-2" id="gate2">
-          <span class="gate-number">Thousands</span>
-          <span class="gate-subtext">submit video + academic proof</span>
-        </div>
-        
-        <div class="tunnel-gate tunnel-gate-3" id="gate3">
-          <span class="gate-number">1,000</span>
-          <span class="gate-subtext">compete in the Beast Games</span>
-        </div>
-        
-        <div class="tunnel-gate tunnel-gate-4" id="gate4">
-          <span class="gate-number">40</span>
-          <span class="gate-subtext">are chosen</span>
-        </div>
-      </div>
+  <!-- Tunnel Container - gets pinned -->
+  <div class="tunnel-container" id="tunnel-container">
+    <!-- Gate 1: Intro text -->
+    <div class="tunnel-gate gate-intro" id="gate1">
+      <span class="gate-tag">Selection</span>
+      <h2>You don't get in by writing an essay. You get in by proving it.</h2>
+      <p>This is the hardest application process in the world. You will DO, not just write. Beast Games-level challenges. Academic proof. Community contribution. Every phase narrows the field.</p>
+    </div>
+    
+    <!-- Gate 2: Live counter -->
+    <div class="tunnel-gate gate-counter" id="gate2">
+      <span class="gate-number" id="appCounter">100,247</span>
+      <span class="gate-label">applications</span>
+    </div>
+    
+    <!-- Gate 3: 10,000+ -->
+    <div class="tunnel-gate" id="gate3">
+      <span class="gate-number">10,000+</span>
+      <span class="gate-label">submit video + academic proof</span>
+    </div>
+    
+    <!-- Gate 4: 1,000+ -->
+    <div class="tunnel-gate" id="gate4">
+      <span class="gate-number">1,000+</span>
+      <span class="gate-label">compete in beast tournament</span>
+    </div>
+    
+    <!-- Gate 5: Final "40" with star glow -->
+    <div class="tunnel-gate gate-final" id="gate5">
+      <div class="star-glow"></div>
+      <span class="gate-number">40</span>
+      <span class="gate-label">are chosen</span>
     </div>
   </div>
   
   <!-- Mobile Fallback -->
   <div class="gauntlet-mobile">
-    <div class="gauntlet-header" style="padding-top: 0;">
-      <p class="gauntlet-tag">Selection</p>
-      <h2 class="gauntlet-title">You don't get in by writing an essay. You get in by proving it.</h2>
-      <p class="gauntlet-body">This is the hardest application process in the world. You will DO, not just write. Beast Games-level challenges. Academic proof. Community contribution. Every phase narrows the field.</p>
+    <div class="gauntlet-mobile-header">
+      <span class="gate-tag" style="display: block; font-family: 'Space Grotesk', sans-serif; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem;">Selection</span>
+      <h2 style="font-family: 'Bebas Neue', cursive; font-size: clamp(1.8rem, 5vw, 2.5rem); margin-bottom: 1rem;">You don't get in by writing an essay. You get in by proving it.</h2>
+      <p style="font-size: 0.95rem; color: var(--text-secondary); max-width: 500px; margin: 0 auto 2rem; line-height: 1.6;">This is the hardest application process in the world. You will DO, not just write. Beast Games-level challenges. Academic proof. Community contribution.</p>
     </div>
     
     <div class="gauntlet-mobile-blocks">
       <div class="gauntlet-mobile-block">
-        <span class="gauntlet-mobile-number">Hundreds of thousands</span>
-        <span class="gauntlet-mobile-text">apply (grades 9-12)</span>
+        <span class="gauntlet-mobile-number" id="appCounterMobile">100,247</span>
+        <span class="gauntlet-mobile-text">applications</span>
       </div>
       <div class="gauntlet-mobile-block">
-        <span class="gauntlet-mobile-number">Thousands</span>
+        <span class="gauntlet-mobile-number">10,000+</span>
         <span class="gauntlet-mobile-text">submit video + academic proof</span>
       </div>
       <div class="gauntlet-mobile-block">
-        <span class="gauntlet-mobile-number">1,000</span>
-        <span class="gauntlet-mobile-text">compete in the Beast Games</span>
+        <span class="gauntlet-mobile-number">1,000+</span>
+        <span class="gauntlet-mobile-text">compete in beast tournament</span>
       </div>
       <div class="gauntlet-mobile-block">
         <span class="gauntlet-mobile-number">40</span>
@@ -2435,68 +2451,100 @@ if (!isMobile) {
 }
 
 // ================================================================
-// GAUNTLET SECTION (3D Tunnel) - DESKTOP ONLY
+// GAUNTLET SECTION (3D Tunnel - Scale Transform) - DESKTOP ONLY
 // ================================================================
 if (!isMobile) {
-  const gauntletContainer = document.querySelector('.gauntlet-container');
-  const gauntletSticky = document.querySelector('.gauntlet-sticky');
+  const tunnelContainer = document.querySelector('#tunnel-container');
   const gate1 = document.querySelector('#gate1');
   const gate2 = document.querySelector('#gate2');
   const gate3 = document.querySelector('#gate3');
   const gate4 = document.querySelector('#gate4');
+  const gate5 = document.querySelector('#gate5');
   
-  // Create the gauntlet timeline - pure black bg, just floating numbers
-  const gauntletTl = gsap.timeline({
+  // Create the tunnel timeline with 400vh scroll distance
+  const tunnelTl = gsap.timeline({
     scrollTrigger: {
-      trigger: gauntletContainer,
+      trigger: '#gauntlet',
+      pin: tunnelContainer,
       start: 'top top',
-      end: 'bottom bottom',
-      pin: gauntletSticky,
-      scrub: true
+      end: '+=400vh',
+      scrub: 0.5
     }
   });
   
-  // Timeline segments - gates approach ONE AT A TIME through pure black
-  gauntletTl
-    // 0-25%: Gate 1 (100,000+) approaches from far and passes through
-    .fromTo(gate1, 
-      { z: -3000, opacity: 0, scale: 0.2 },
-      { z: 800, opacity: 1, scale: 2.5, duration: 0.22, ease: 'power1.in' },
-      0.03
-    )
-    .to(gate1, { opacity: 0, duration: 0.03 }, 0.22)
+  // Helper function to animate a gate: approach → pause → fly past
+  function animateGate(gate, startPos, flyPast = true) {
+    // Approach: scale 0.3 → 1, opacity 0.3 → 1
+    tunnelTl.fromTo(gate, 
+      { scale: 0.3, opacity: 0.3 },
+      { scale: 1, opacity: 1, duration: 0.08, ease: 'power2.out' },
+      startPos
+    );
     
-    // 25-50%: Gate 2 (1,000) approaches and passes
-    .fromTo(gate2,
-      { z: -3000, opacity: 0, scale: 0.2 },
-      { z: 800, opacity: 1, scale: 2.2, duration: 0.22, ease: 'power1.in' },
-      0.25
-    )
-    .to(gate2, { opacity: 0, duration: 0.03 }, 0.44)
+    // Pause: hold at scale 1 briefly
+    tunnelTl.to(gate, 
+      { scale: 1, opacity: 1, duration: 0.04 },
+      startPos + 0.08
+    );
     
-    // 50-70%: Gate 3 (400) approaches and passes
-    .fromTo(gate3,
-      { z: -3000, opacity: 0, scale: 0.2 },
-      { z: 800, opacity: 1, scale: 2, duration: 0.18, ease: 'power1.in' },
-      0.48
-    )
-    .to(gate3, { opacity: 0, duration: 0.03 }, 0.64)
-    
-    // 68-95%: Gate 4 (40) approaches but STOPS at z=0, glows dramatically
-    .fromTo(gate4,
-      { z: -3000, opacity: 0, scale: 0.3 },
-      { z: 0, opacity: 1, scale: 1, duration: 0.27, ease: 'power2.out' },
-      0.68
-    )
-    // Add glow to the final "40"
-    .to('#gate4 .gate-number', {
-      textShadow: '0 0 80px rgba(255, 31, 113, 1), 0 0 150px rgba(255, 31, 113, 0.6), 0 0 200px rgba(255, 31, 113, 0.3)',
-      duration: 0.08
-    }, 0.90)
-    
-    // 95-100%: Hold on "40" for dramatic effect
-    .to({}, { duration: 0.05 }, 0.95);
+    // Fly past: scale 1 → 3.5, opacity 1 → 0 (if flyPast is true)
+    if (flyPast) {
+      tunnelTl.to(gate, 
+        { scale: 3.5, opacity: 0, duration: 0.08, ease: 'power2.in' },
+        startPos + 0.12
+      );
+    }
+  }
+  
+  // Gate 1 (intro text): 0.00 - 0.20
+  animateGate(gate1, 0.00);
+  
+  // Gate 2 (live counter): 0.20 - 0.40
+  animateGate(gate2, 0.20);
+  
+  // Gate 3 (10,000+): 0.40 - 0.60
+  animateGate(gate3, 0.40);
+  
+  // Gate 4 (1,000+): 0.60 - 0.80
+  animateGate(gate4, 0.60);
+  
+  // Gate 5 (40) - special: approach and STAY (no fly past)
+  // Approach: 0.80 - 0.88
+  tunnelTl.fromTo(gate5, 
+    { scale: 0.3, opacity: 0.3 },
+    { scale: 1, opacity: 1, duration: 0.08, ease: 'power2.out' },
+    0.80
+  );
+  // Hold at scale 1 for the rest (0.88 - 1.0)
+  tunnelTl.to(gate5, 
+    { scale: 1, opacity: 1, duration: 0.12 },
+    0.88
+  );
 }
+
+// ================================================================
+// LIVE APPLICATION COUNTER (runs independently)
+// ================================================================
+let appCounterValue = 100000 + Math.floor(Math.random() * 500);
+const appCounterEl = document.getElementById('appCounter');
+const appCounterMobileEl = document.getElementById('appCounterMobile');
+
+function formatAppCount(n) {
+  return n.toLocaleString();
+}
+
+// Update counter every 0.5-2 seconds
+function tickCounter() {
+  appCounterValue += Math.floor(Math.random() * 5) + 1;
+  if (appCounterEl) appCounterEl.textContent = formatAppCount(appCounterValue);
+  if (appCounterMobileEl) appCounterMobileEl.textContent = formatAppCount(appCounterValue);
+  
+  // Schedule next tick
+  setTimeout(tickCounter, Math.random() * 1500 + 500);
+}
+
+// Start the counter
+tickCounter();
 
 // ================================================================
 // APPLY SECTION - FORM AND ANIMATIONS
