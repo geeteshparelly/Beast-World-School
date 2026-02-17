@@ -260,64 +260,22 @@
 }
 
 /* ================================================================
-   DARK MODE - Subtle Texture Overlays
+   DARK MODE - Clean Solid Backgrounds (no textures)
    ================================================================ */
-
-/* Manifesto: subtle cyan texture overlay */
-.manifesto::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url('https://geeteshparelly.github.io/Beast-World-School/assets/texture-cyan.webp');
-  background-size: cover;
-  background-position: center;
-  opacity: 0.06;
-  pointer-events: none;
-  z-index: 0;
-  mix-blend-mode: screen;
-}
 
 .manifesto-content {
   position: relative;
   z-index: 2;
 }
 
-/* Journey/Map: subtle pink texture overlay on pinned element */
 .journey-sticky {
   position: relative;
-}
-
-.journey-sticky::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url('https://geeteshparelly.github.io/Beast-World-School/assets/texture-pink.jpg');
-  background-size: cover;
-  background-position: center;
-  opacity: 0.05;
-  pointer-events: none;
-  z-index: 0;
-  mix-blend-mode: screen;
 }
 
 .journey-header,
 .journey-map-wrapper {
   position: relative;
   z-index: 2;
-}
-
-/* Apply/Form: subtle gray texture overlay */
-.apply::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url('https://geeteshparelly.github.io/Beast-World-School/assets/texture-gray.jpg');
-  background-size: cover;
-  background-position: center;
-  opacity: 0.08;
-  pointer-events: none;
-  z-index: 0;
-  mix-blend-mode: screen;
 }
 
 .apply > * {
@@ -366,8 +324,8 @@ body {
   border-radius: 3px;
 }
 
-/* Grain Texture Overlay */
-body::after {
+/* Grain Texture Overlay - LIGHT MODE ONLY */
+.light-mode::after {
   content: '';
   position: fixed;
   top: 0;
