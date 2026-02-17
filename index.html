@@ -581,7 +581,8 @@ body::after {
 /* Location Cards */
 .location-card {
   position: absolute;
-  width: 280px;
+  width: 300px;
+  max-width: 90vw;
   background: rgba(10, 10, 10, 0.95);
   border: 1px solid var(--surface-3);
   border-radius: 8px;
@@ -590,11 +591,22 @@ body::after {
   transform: scale(0.9);
   z-index: var(--z-map-cards);
   pointer-events: none;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
-.location-card.africa { border-top: 3px solid var(--africa); }
-.location-card.india { border-top: 3px solid var(--india); }
-.location-card.amazon { border-top: 3px solid var(--amazon); }
+.location-card.africa { 
+  border-left: 3px solid var(--africa);
+  border-top: none;
+}
+.location-card.india { 
+  border-left: 3px solid var(--india);
+  border-top: none;
+}
+.location-card.amazon { 
+  border-left: 3px solid var(--amazon);
+  border-top: none;
+}
 
 .location-card-title {
   font-family: 'Bebas Neue', cursive;
@@ -652,10 +664,10 @@ body::after {
   color: var(--text-muted);
 }
 
-/* Card positioning */
-.location-card.africa { left: 55%; top: 30%; }
-.location-card.india { left: 60%; top: 25%; }
-.location-card.amazon { left: 15%; top: 50%; }
+/* Card positioning - aligned with map waypoints */
+.location-card.africa { left: 42%; top: 35%; }
+.location-card.india { left: 58%; top: 28%; }
+.location-card.amazon { left: 18%; top: 55%; }
 
 /* Mobile Journey Fallback */
 .journey-mobile {
@@ -815,13 +827,15 @@ body::after {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) translateZ(-2000px);
+  transform: translate(-50%, -50%) translateZ(-3000px);
+  transform-style: preserve-3d;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   border: 3px solid rgba(var(--accent-rgb), 0.4);
   background: transparent;
+  opacity: 0;
 }
 
 .tunnel-gate-1 {
@@ -1124,10 +1138,11 @@ body::after {
 .form-input {
   width: 100%;
   padding: 1rem;
-  background: var(--surface-2);
+  background: var(--surface-2) !important;
+  background-color: #111111 !important;
   border: 1px solid var(--surface-3);
   border-radius: 6px;
-  color: var(--text-primary);
+  color: var(--text-primary) !important;
   font-family: 'DM Sans', sans-serif;
   font-size: 1rem;
   transition: border-color 0.3s ease;
@@ -1156,10 +1171,11 @@ body::after {
 .form-select {
   width: 100%;
   padding: 1rem;
-  background: var(--surface-2);
+  background: var(--surface-2) !important;
+  background-color: #111111 !important;
   border: 1px solid var(--surface-3);
   border-radius: 6px;
-  color: var(--text-primary);
+  color: var(--text-primary) !important;
   font-family: 'DM Sans', sans-serif;
   font-size: 1rem;
   cursor: pointer;
@@ -1470,27 +1486,37 @@ body::after {
       <div class="journey-map-wrapper">
         <!-- SVG World Map with Flight Path and Airplane -->
         <svg class="journey-map-svg" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet">
-          <!-- Simplified World Map Continents -->
+          <!-- Simplified but Recognizable World Map -->
           <g class="continents" fill="#1a1a1a" stroke="#2a2a2a" stroke-width="0.5">
-            <!-- North America -->
-            <path d="M50,120 L120,80 L180,70 L240,90 L280,120 L290,160 L270,200 L230,230 L200,280 L180,260 L140,240 L100,220 L60,180 L50,120 Z"/>
-            <!-- South America -->
-            <path d="M200,290 L230,280 L270,310 L290,360 L300,420 L280,460 L240,470 L200,450 L180,400 L170,350 L180,310 L200,290 Z"/>
-            <!-- Europe -->
-            <path d="M440,100 L480,80 L520,85 L540,110 L530,140 L500,160 L460,155 L440,130 L440,100 Z"/>
-            <!-- Africa -->
-            <path d="M440,180 L480,170 L530,180 L560,220 L570,280 L550,340 L520,380 L470,390 L430,360 L420,300 L430,240 L440,180 Z"/>
-            <!-- Asia -->
-            <path d="M560,80 L620,60 L700,70 L780,90 L820,130 L800,180 L760,200 L720,190 L680,210 L640,200 L600,180 L560,150 L550,110 L560,80 Z"/>
-            <!-- India -->
-            <path d="M640,210 L680,200 L720,220 L710,270 L680,310 L640,290 L630,250 L640,210 Z"/>
-            <!-- Australia -->
-            <path d="M780,340 L840,320 L890,340 L900,390 L870,430 L820,440 L780,420 L770,380 L780,340 Z"/>
+            <!-- North America - recognizable shape with east coast, Florida, Mexico -->
+            <path d="M80,90 L100,70 L140,65 L170,60 L200,55 L230,60 L250,80 L260,95 L280,100 L295,115 L300,135 L295,155 L280,170 L270,185 L275,200 L265,215 L250,225 L235,240 L215,235 L195,250 L175,245 L160,230 L145,220 L125,225 L105,210 L90,195 L75,175 L65,150 L60,125 L70,105 L80,90 Z"/>
+            <!-- Central America -->
+            <path d="M195,250 L210,255 L225,270 L235,285 L230,300 L215,295 L200,285 L195,270 L195,250 Z"/>
+            <!-- South America - distinctive shape with Brazil bulge -->
+            <path d="M230,300 L255,295 L280,305 L305,325 L315,350 L320,380 L315,410 L300,440 L275,460 L250,465 L225,455 L210,430 L205,400 L210,370 L220,345 L215,320 L230,300 Z"/>
+            <!-- Europe - small but recognizable -->
+            <path d="M450,85 L470,75 L495,70 L520,75 L540,85 L550,100 L545,120 L530,135 L510,145 L485,150 L460,145 L445,130 L440,110 L450,85 Z"/>
+            <!-- UK/Ireland -->
+            <path d="M430,95 L445,90 L450,105 L445,115 L435,110 L430,95 Z"/>
+            <!-- Africa - unmistakable shape -->
+            <path d="M460,160 L485,155 L510,160 L535,165 L555,180 L570,200 L580,230 L585,265 L580,300 L570,335 L555,365 L535,390 L505,400 L475,395 L450,380 L435,355 L430,320 L435,285 L445,250 L450,215 L455,185 L460,160 Z"/>
+            <!-- Middle East -->
+            <path d="M555,180 L580,175 L605,185 L620,200 L610,220 L590,225 L570,215 L555,195 L555,180 Z"/>
+            <!-- Asia - large mass -->
+            <path d="M550,70 L590,55 L640,50 L700,55 L760,65 L810,80 L850,100 L870,130 L865,160 L850,185 L820,195 L785,190 L750,185 L720,175 L700,185 L680,175 L660,185 L640,180 L610,175 L580,165 L560,145 L545,115 L550,85 L550,70 Z"/>
+            <!-- India - recognizable peninsula -->
+            <path d="M660,185 L685,180 L710,190 L720,210 L715,240 L700,270 L680,295 L655,285 L645,260 L650,230 L655,205 L660,185 Z"/>
+            <!-- Southeast Asia -->
+            <path d="M720,210 L750,200 L775,215 L790,240 L780,265 L760,275 L740,260 L730,235 L720,210 Z"/>
+            <!-- Australia - distinctive shape -->
+            <path d="M790,330 L830,320 L870,325 L900,340 L915,370 L905,400 L880,420 L845,430 L810,425 L785,405 L780,375 L785,350 L790,330 Z"/>
+            <!-- Japan -->
+            <path d="M870,130 L885,125 L895,140 L890,160 L875,165 L865,155 L870,130 Z"/>
           </g>
           
           <!-- Flight Path Background (dashed, dim) -->
           <path id="flightPathBg" 
-                d="M250,175 C350,120 420,180 480,260 C540,200 600,180 680,210 C600,280 400,350 280,290" 
+                d="M260,170 C350,100 430,150 505,280 C560,220 620,200 680,240 C620,320 420,380 280,360" 
                 fill="none" 
                 stroke="#333" 
                 stroke-width="2" 
@@ -1498,36 +1524,41 @@ body::after {
           
           <!-- Flight Path Progress (solid, accent, animated) -->
           <path id="flightPath" 
-                d="M250,175 C350,120 420,180 480,260 C540,200 600,180 680,210 C600,280 400,350 280,290" 
+                d="M260,170 C350,100 430,150 505,280 C560,220 620,200 680,240 C620,320 420,380 280,360" 
                 fill="none" 
                 stroke="var(--accent)" 
-                stroke-width="2"
+                stroke-width="2.5"
                 class="flight-path-progress"/>
           
           <!-- Waypoint Markers -->
           <g class="waypoints">
-            <!-- Home (USA) -->
-            <circle cx="250" cy="175" r="6" fill="#ffffff" class="waypoint home"/>
-            <text x="250" y="160" text-anchor="middle" fill="#666" font-family="Space Grotesk" font-size="10" letter-spacing="2">HOME</text>
+            <!-- Home (USA) - East Coast -->
+            <circle cx="260" cy="170" r="8" fill="#ffffff" class="waypoint home"/>
+            <text x="260" y="152" text-anchor="middle" fill="#888" font-family="Space Grotesk" font-size="11" letter-spacing="2">HOME</text>
             
-            <!-- Africa -->
-            <circle cx="480" cy="260" r="6" fill="var(--africa)" class="waypoint africa-dot"/>
-            <text x="480" y="245" text-anchor="middle" fill="var(--africa)" font-family="Space Grotesk" font-size="10" letter-spacing="2">AFRICA</text>
+            <!-- Africa - West Africa -->
+            <circle cx="505" cy="280" r="8" fill="#d4a438" class="waypoint africa-dot"/>
+            <text x="505" y="262" text-anchor="middle" fill="#d4a438" font-family="Space Grotesk" font-size="11" letter-spacing="2">AFRICA</text>
             
             <!-- India -->
-            <circle cx="680" cy="210" r="6" fill="var(--india)" class="waypoint india-dot"/>
-            <text x="680" y="195" text-anchor="middle" fill="var(--india)" font-family="Space Grotesk" font-size="10" letter-spacing="2">INDIA</text>
+            <circle cx="680" cy="240" r="8" fill="#3b8bff" class="waypoint india-dot"/>
+            <text x="680" y="222" text-anchor="middle" fill="#3b8bff" font-family="Space Grotesk" font-size="11" letter-spacing="2">INDIA</text>
             
-            <!-- Amazon -->
-            <circle cx="280" cy="290" r="6" fill="var(--amazon)" class="waypoint amazon-dot"/>
-            <text x="280" y="310" text-anchor="middle" fill="var(--amazon)" font-family="Space Grotesk" font-size="10" letter-spacing="2">THE AMAZON</text>
+            <!-- Amazon - Ecuador/Brazil -->
+            <circle cx="280" cy="360" r="8" fill="#00e87b" class="waypoint amazon-dot"/>
+            <text x="280" y="385" text-anchor="middle" fill="#00e87b" font-family="Space Grotesk" font-size="11" letter-spacing="2">THE AMAZON</text>
           </g>
           
-          <!-- Airplane (inside SVG, same coordinate system) -->
-          <g id="airplane" class="airplane">
-            <path d="M-15,0 L15,0 L12,-3 L5,-3 L5,-8 L3,-10 L1,-8 L1,-3 L-5,-3 L-12,-3 L-15,0 L-10,2 L-5,2 L-5,5 L5,5 L5,2 L10,2 Z" 
+          <!-- Airplane (inside SVG, same coordinate system) - larger and more visible -->
+          <defs>
+            <filter id="airplaneGlow" x="-50%" y="-50%" width="200%" height="200%">
+              <feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#ffffff" flood-opacity="0.8"/>
+            </filter>
+          </defs>
+          <g id="airplane" class="airplane" filter="url(#airplaneGlow)">
+            <path d="M-12,0 L12,0 L10,-2.5 L4,-2.5 L4,-7 L2,-9 L0,-7 L0,-2.5 L-4,-2.5 L-10,-2.5 L-12,0 L-8,2 L-4,2 L-4,4 L4,4 L4,2 L8,2 Z" 
                   fill="#ffffff" 
-                  transform="scale(1.2)"/>
+                  transform="scale(2)"/>
           </g>
         </svg>
         
@@ -2120,13 +2151,8 @@ if (!isMobile) {
   const gate4 = document.querySelector('.tunnel-gate-4');
   const tunnelWalls = document.querySelectorAll('.tunnel-wall');
   
-  // Set initial states
-  gsap.set([gate1, gate2, gate3, gate4], { 
-    transformStyle: 'preserve-3d',
-    z: -2000,
-    opacity: 1
-  });
-  gsap.set(tunnelLight, { scale: 0.5, opacity: 0.3 });
+  // Set initial states - all gates start far away and invisible
+  gsap.set(tunnelLight, { scale: 0.3, opacity: 0.2 });
   gsap.set(tunnelWalls, { opacity: 0 });
   
   // Create the gauntlet timeline
@@ -2140,59 +2166,55 @@ if (!isMobile) {
     }
   });
   
-  // Timeline segments
+  // Timeline segments - gates approach ONE AT A TIME with staggered starts
   gauntletTl
-    // 0-15%: Tunnel walls fade in, see the distant light and first gate
-    .to(tunnelWalls, { opacity: 0.15, duration: 0.15 }, 0)
-    .to(tunnelLight, { scale: 0.8, opacity: 0.5, duration: 0.15 }, 0)
+    // 0-10%: Tunnel walls fade in, see the distant light
+    .to(tunnelWalls, { opacity: 0.15, duration: 0.10 }, 0)
+    .to(tunnelLight, { scale: 0.5, opacity: 0.4, duration: 0.10 }, 0)
     
-    // 15-30%: Gate 1 rushes toward you and past you
-    .to(gate1, { 
-      z: 500, 
-      scale: 3,
-      opacity: 0,
-      duration: 0.15,
-      ease: 'power1.in'
-    }, 0.15)
-    .to(tunnelLight, { scale: 1.2, opacity: 0.6, duration: 0.15 }, 0.15)
+    // 5-25%: Gate 1 (100,000+) approaches from far and passes through
+    .fromTo(gate1, 
+      { z: -3000, opacity: 0, scale: 0.3 },
+      { z: 800, opacity: 1, scale: 3, duration: 0.20, ease: 'power1.in' },
+      0.05
+    )
+    .to(gate1, { opacity: 0, duration: 0.05 }, 0.22) // fade out as it passes
+    .to(tunnelLight, { scale: 0.8, opacity: 0.5, duration: 0.20 }, 0.05)
     
-    // 30-50%: Gate 2 approaches and passes
-    .to(gate2, { 
-      z: 500, 
-      scale: 2.5,
-      opacity: 0,
-      duration: 0.20,
-      ease: 'power1.in'
-    }, 0.30)
-    .to(tunnelLight, { scale: 1.8, opacity: 0.7, duration: 0.20 }, 0.30)
+    // 25-45%: Gate 2 (1,000) approaches and passes
+    .fromTo(gate2,
+      { z: -3000, opacity: 0, scale: 0.3 },
+      { z: 800, opacity: 1, scale: 2.5, duration: 0.20, ease: 'power1.in' },
+      0.25
+    )
+    .to(gate2, { opacity: 0, duration: 0.05 }, 0.42)
+    .to(tunnelLight, { scale: 1.2, opacity: 0.6, duration: 0.20 }, 0.25)
     
-    // 50-70%: Gate 3 approaches and passes
-    .to(gate3, { 
-      z: 500, 
-      scale: 2,
-      opacity: 0,
-      duration: 0.20,
-      ease: 'power1.in'
-    }, 0.50)
-    .to(tunnelLight, { scale: 2.5, opacity: 0.8, duration: 0.20 }, 0.50)
+    // 45-65%: Gate 3 (400) approaches and passes
+    .fromTo(gate3,
+      { z: -3000, opacity: 0, scale: 0.3 },
+      { z: 800, opacity: 1, scale: 2, duration: 0.20, ease: 'power1.in' },
+      0.45
+    )
+    .to(gate3, { opacity: 0, duration: 0.05 }, 0.62)
+    .to(tunnelLight, { scale: 2, opacity: 0.7, duration: 0.20 }, 0.45)
     
-    // 70-90%: Gate 4 approaches but STOPS, centers, and glows
-    .to(gate4, { 
-      z: 0, 
-      scale: 1,
-      duration: 0.20,
-      ease: 'power2.out'
-    }, 0.70)
+    // 65-90%: Gate 4 (40) approaches but STOPS at z=0, centers, and glows
+    .fromTo(gate4,
+      { z: -3000, opacity: 0, scale: 0.5 },
+      { z: 0, opacity: 1, scale: 1, duration: 0.25, ease: 'power2.out' },
+      0.65
+    )
     .to(tunnelLight, { 
-      scale: 5, 
+      scale: 6, 
       opacity: 1, 
-      filter: 'blur(60px)',
-      duration: 0.20 
-    }, 0.70)
-    .to('.tunnel-gate-4 .gate-number', {
-      textShadow: '0 0 80px rgba(var(--accent-rgb), 0.8)',
+      filter: 'blur(80px)',
+      duration: 0.25 
+    }, 0.65)
+    .to(gate4, {
+      boxShadow: '0 0 60px rgba(255, 31, 113, 0.8), 0 0 120px rgba(255, 31, 113, 0.5), inset 0 0 60px rgba(255, 31, 113, 0.3)',
       duration: 0.10
-    }, 0.80)
+    }, 0.85)
     
     // 90-100%: Hold on "40" for dramatic effect
     .to({}, { duration: 0.10 }, 0.90);
@@ -2276,11 +2298,17 @@ formSubmit.addEventListener('click', () => {
       formSubmit.classList.add('success');
       formSubmit.disabled = true;
       
+      // Hide the airplane
+      submitAirplane.style.display = 'none';
+      
       // Fade out wipe
       gsap.to(submitWipe, {
         opacity: 0,
         duration: 0.5,
-        delay: 0.5
+        delay: 0.5,
+        onComplete: () => {
+          submitWipe.style.display = 'none';
+        }
       });
     });
 });
@@ -2288,32 +2316,35 @@ formSubmit.addEventListener('click', () => {
 // Live counter animation (once: true, never reverse)
 let currentCount = 47283;
 
-ScrollTrigger.create({
-  trigger: '.live-counter',
-  start: 'top 80%',
-  once: true,
-  onEnter: () => {
-    gsap.to({ val: 0 }, {
-      val: currentCount,
-      duration: 2,
-      ease: 'power2.out',
-      snap: { val: 1 },
-      onUpdate: function() {
-        liveCounter.textContent = Math.round(this.targets()[0].val).toLocaleString();
-      },
-      onComplete: () => {
-        // Start auto-increment only after count-up finishes
-        if (!counterStarted) {
-          counterStarted = true;
-          setInterval(() => {
-            currentCount += 1;
-            liveCounter.textContent = currentCount.toLocaleString();
-          }, Math.random() * 5000 + 3000); // 3-8 seconds
+// Ensure the counter element exists before creating ScrollTrigger
+if (liveCounter) {
+  ScrollTrigger.create({
+    trigger: '.form-card',
+    start: 'top 85%',
+    once: true,
+    onEnter: () => {
+      const countObj = { val: 0 };
+      gsap.to(countObj, {
+        val: currentCount,
+        duration: 2,
+        ease: 'power2.out',
+        onUpdate: function() {
+          liveCounter.textContent = Math.round(countObj.val).toLocaleString();
+        },
+        onComplete: () => {
+          // Start auto-increment only after count-up finishes
+          if (!counterStarted) {
+            counterStarted = true;
+            setInterval(() => {
+              currentCount += 1;
+              liveCounter.textContent = currentCount.toLocaleString();
+            }, Math.random() * 5000 + 3000); // 3-8 seconds
+          }
         }
-      }
-    });
-  }
-});
+      });
+    }
+  });
+}
 
 // ================================================================
 // SORT AND REFRESH ALL SCROLLTRIGGERS
