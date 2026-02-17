@@ -765,6 +765,7 @@ body {
   position: relative;
   background: var(--bg);
   transition: background-color 0.4s ease, background-image 0.4s ease;
+  z-index: 1;
 }
 
 .journey-container {
@@ -958,6 +959,7 @@ body {
 .gauntlet {
   position: relative;
   background: var(--bg);
+  z-index: 2;
 }
 
 .gauntlet-container {
@@ -2345,11 +2347,13 @@ if (!isMobile) {
   });
   
   // Timeline segments - SYNCED card timing with airplane arrival
+  // Airplane travels: Home→Africa (0-0.33), Africa→India (0.33-0.66), India→Amazon (0.66-1.0)
+  // Cards appear RIGHT when airplane reaches each waypoint
   journeyTl
-    // 0-5%: Map fades in, airplane appears at Home
+    // 0-5%: Airplane appears at Home
     .to(airplane, { opacity: 1, duration: 0.05 }, 0)
     
-    // 5-20%: Fly from Home to Africa
+    // 5-20%: Fly from Home to Africa (airplane reaches Africa at ~0.20)
     .to(airplane, {
       motionPath: {
         path: '#flightPath',
@@ -2367,13 +2371,13 @@ if (!isMobile) {
       ease: 'none'
     }, 0.05)
     
-    // 18-30%: Africa card fades in WHEN airplane arrives (synced)
-    .to(cardAfrica, { opacity: 1, scale: 1, duration: 0.04 }, 0.18)
+    // 20%: Africa card fades in RIGHT when airplane arrives
+    .to(cardAfrica, { opacity: 1, scale: 1, duration: 0.03 }, 0.20)
     
-    // 30-35%: Africa card fades out
-    .to(cardAfrica, { opacity: 0, scale: 0.9, duration: 0.05 }, 0.30)
+    // 32%: Africa card fades out before next leg
+    .to(cardAfrica, { opacity: 0, scale: 0.9, duration: 0.03 }, 0.32)
     
-    // 35-50%: Fly from Africa to India
+    // 35-50%: Fly from Africa to India (airplane reaches India at ~0.50)
     .to(airplane, {
       motionPath: {
         path: '#flightPath',
@@ -2391,13 +2395,13 @@ if (!isMobile) {
       ease: 'none'
     }, 0.35)
     
-    // 48-62%: India card fades in WHEN airplane arrives (synced)
-    .to(cardIndia, { opacity: 1, scale: 1, duration: 0.04 }, 0.48)
+    // 50%: India card fades in RIGHT when airplane arrives
+    .to(cardIndia, { opacity: 1, scale: 1, duration: 0.03 }, 0.50)
     
-    // 62-67%: India card fades out
-    .to(cardIndia, { opacity: 0, scale: 0.9, duration: 0.05 }, 0.62)
+    // 64%: India card fades out before next leg
+    .to(cardIndia, { opacity: 0, scale: 0.9, duration: 0.03 }, 0.64)
     
-    // 67-80%: Fly from India to Amazon
+    // 67-80%: Fly from India to Amazon (airplane reaches Amazon at ~0.80)
     .to(airplane, {
       motionPath: {
         path: '#flightPath',
@@ -2415,14 +2419,13 @@ if (!isMobile) {
       ease: 'none'
     }, 0.67)
     
-    // 78-92%: Amazon card fades in WHEN airplane arrives (synced)
-    .to(cardAmazon, { opacity: 1, scale: 1, duration: 0.04 }, 0.78)
+    // 80%: Amazon card fades in RIGHT when airplane arrives
+    .to(cardAmazon, { opacity: 1, scale: 1, duration: 0.03 }, 0.80)
     
-    // 92-95%: Amazon card fades out
-    .to(cardAmazon, { opacity: 0, scale: 0.9, duration: 0.03 }, 0.92)
+    // 95%: Amazon card fades out near end
+    .to(cardAmazon, { opacity: 0, scale: 0.9, duration: 0.03 }, 0.95);
     
-    // 95-100%: Map fades out smoothly (not abruptly)
-    .to('.journey-map-wrapper', { opacity: 0, duration: 0.05 }, 0.95);
+    // NO map fade-out - gauntlet section covers it naturally with higher z-index
 }
 
 // ================================================================
