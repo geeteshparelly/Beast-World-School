@@ -1072,11 +1072,18 @@ body {
   z-index: -1;
 }
 
-/* Mystery Box */
+/* Mystery Box - OUTSIDE tunnel, higher z-index to cover it */
 .mystery-box {
+  position: relative;
+  z-index: 5;
   padding: 80px clamp(2rem, 8vw, 10rem);
   display: flex;
   justify-content: center;
+  background: #050505;
+}
+
+.light-mode .mystery-box {
+  background: #ffffff;
 }
 
 .mystery-card {
@@ -1989,13 +1996,14 @@ body {
     </div>
   </div>
   
-  <!-- Mystery Box -->
-  <div class="mystery-box">
-    <div class="mystery-card">
-      <div class="mystery-icon">?</div>
-      <h3 class="mystery-title">What are the challenges?</h3>
-      <p class="mystery-body">You will find out when they drop. All we will say is this: they will test everything - your brain, your grit, your creativity, and how badly you actually want this. Enter your name. The first challenge comes to you.</p>
-    </div>
+</section>
+
+<!-- Mystery Box (OUTSIDE tunnel, appears after) -->
+<section class="mystery-box">
+  <div class="mystery-card">
+    <div class="mystery-icon">?</div>
+    <h3 class="mystery-title">What are the challenges?</h3>
+    <p class="mystery-body">You will find out when they drop. All we will say is this: they will test everything - your brain, your grit, your creativity, and how badly you actually want this. Enter your name. The first challenge comes to you.</p>
   </div>
 </section>
 
